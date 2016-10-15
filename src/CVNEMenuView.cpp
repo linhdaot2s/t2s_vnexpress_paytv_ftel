@@ -229,17 +229,15 @@ void CVNEMenuView::ProcessKeyDown()
 					cout << "			CVNEMenuView::ProcessKeyDown ---> key RIGHT !" << endl;
 					m_wMenuFocus->SetOpacity(m_wMenuFocus, 0);
 					CVNEApp::GetInstance()->pCVNEDetailView->ProcessKeyDown();
+					m_wMenuFocus->SetOpacity(m_wMenuFocus, 255);
 					break;
 				}
 				case DIKS_CURSOR_UP: {
 					cout << "			CVNEMenuView::ProcessKeyDown ---> key UP !" << endl;
 					switch (iPosMenuLevel) {
 					case MENU_LEVEL_1: {
-						if (iPosMenu == 0) {
-							iPosMenu = pListMenu->size - 1;
-							iPosMenuPage = pListMenu->sizepage;
-							this->LoadPageItemMenuLv1();
-						}
+						if (iPosMenu == 0)
+							break;
 						else {
 							if ((iPosMenu) % 9 == 0) {
 								iPosMenu -= 1;
@@ -260,11 +258,8 @@ void CVNEMenuView::ProcessKeyDown()
 					cout << "			CVNEMenuView::ProcessKeyDown ---> key DOWN !" << endl;
 					switch (iPosMenuLevel) {
 					case MENU_LEVEL_1: {
-						if (iPosMenu == pListMenu->size - 1) {
-							iPosMenu = 0;
-							iPosMenuPage = 1;
-							this->LoadPageItemMenuLv1();
-						}
+						if (iPosMenu == pListMenu->size - 1)
+							break;
 						else {
 							if ((iPosMenu + 1) % 9 == 0) {
 								iPosMenu += 1;

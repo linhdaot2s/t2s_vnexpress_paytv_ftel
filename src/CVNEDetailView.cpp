@@ -13,6 +13,7 @@ CVNEDetailView::CVNEDetailView()
 	pSize20 = NULL;
 	pSize25 = NULL;
 	iPosInfoPage = 0;
+	iPosInfo = 0;
 	bIsBreak = false;
 	pCFBGlobal = CFBGlobal::FBSingletonGlobalInit();
 	this->OnInit();
@@ -98,7 +99,7 @@ void CVNEDetailView::OnInit()
 	if (m_wMainView == NULL && m_sfMainView == NULL)
 		pCFBGlobal->FBWindowCreateWithAlphaChannel(&m_wMainView, NULL, &m_sfMainView, list_x, list_y, list_width, list_height, 0xff);
 	if (m_wMainFocus == NULL && m_sfMainFocus == NULL)
-		pCFBGlobal->FBWindowCreateWithAlphaChannel(&m_wMainFocus, NULL, &m_sfMainFocus, list_x, media_y, 250, 250, 0xff);
+		pCFBGlobal->FBWindowCreateWithAlphaChannel(&m_wMainFocus, NULL, &m_sfMainFocus, list_x, media_y, 250, 250, 0x00);
 	cout << "			CVNEDetailView::OnInit ==========================> OnInit SUCCESSFULL !" << endl;
 }
 
@@ -112,8 +113,10 @@ void CVNEDetailView::FlipAll()
 void CVNEDetailView::LoadStartup()
 {
 	cout << "			CVNEDetailView::LoadStartup ==========================> LoadStartup !" << endl;
+	iPosInfo = 0;
 	this->CancelThreadPicture();
 	pthread_create(&pLoadPic, NULL, CVNEDetailView::createPthreadShowItemsChangePage, (void*)this);
+	this->DrawFocusInfo();
 	this->FlipAll();
 	cout << "			CVNEDetailView::LoadStartup ==========================> LoadStartup SUCCESSFULL !" << endl;
 }
@@ -210,7 +213,7 @@ void* CVNEDetailView::createPthreadShowItemsChangePage(void *vshowItemsChangePag
 		}
 		else {
 			if (m_pVNExpressThis->iPosInfoPage > 1 && m_pVNExpressThis->iPosInfoPage < m_pVNExpressThis->pListItem->sizepage) {
-				printf("				CVNExpressListView::createPthreadShowItemsChangePage ---> Middle page :  \n");
+				printf("				CVNEDetailView::createPthreadShowItemsChangePage ---> Middle page :  \n");
 				m_pVNExpressThis->ShowUpOrDownIcon(3);
 				m_pVNExpressThis->FillRectPic(8);
 				for (int i = (m_pVNExpressThis->iPosInfoPage - 1) * 8; i < m_pVNExpressThis->iPosInfoPage * 8; i++) {
@@ -227,10 +230,11 @@ void* CVNEDetailView::createPthreadShowItemsChangePage(void *vshowItemsChangePag
 				}
 			}
 			else {
-				printf("				CVNExpressListView::createPthreadShowItemsChangePage ---> Last page :  \n");
+				printf("				CVNEDetailView::createPthreadShowItemsChangePage ---> Last page :  \n");
 				m_pVNExpressThis->ShowUpOrDownIcon(1);
 				m_pVNExpressThis->FillRectPic(m_pVNExpressThis->pListItem->size - ((m_pVNExpressThis->pListItem->sizepage - 1) * 8));
 				for (int i = (m_pVNExpressThis->pListItem->sizepage - 1) * 8; i < m_pVNExpressThis->pListItem->size; i++) {
+					cout << endl<< i << endl;
 					m_pVNExpressThis->pCFBGlobal->DrawTextMulti(m_pVNExpressThis->m_sfMainView, m_pVNExpressThis->pSize20,
 						m_pVNExpressThis->pListItem[i].title.c_str(), TextDef[i % 8].x, TextDef[i % 8].y,
 						240, VNE_BLACK, (DFBSurfaceTextFlags)DSTF_TOPCENTER, false, 2);
@@ -251,6 +255,7 @@ void* CVNEDetailView::createPthreadShowItemsChangePage(void *vshowItemsChangePag
 void CVNEDetailView::ProcessKeyDown()
 {
 	cout << "			CVNEDetailView::ProcessKeyDown ==========================> ProcessKeyDown !" << endl;
+	bIsBreak = false;
 	m_wMainFocus->SetOpacity(m_wMainFocus, 0xff);
 	while (!bIsBreak) {
 		DFBInputEvent event;
@@ -261,7 +266,7 @@ void CVNEDetailView::ProcessKeyDown()
 					cout << "			CVNEDetailView::ProcessKeyDown ---> key LEFT !" << endl;
 					if ( iPosInfo % 4 == 0) {
 						bIsBreak = true;
-						m_wMainFocus->SetOpacity(m_wMainFocus, 0xff);
+						m_wMainFocus->SetOpacity(m_wMainFocus, 0);
 					}
 					else {
 						iPosInfo--;

@@ -1,5 +1,6 @@
 #include "CVNEApp.h"
 
+
 CVNEApp *CVNEApp::pApp = NULL;
 
 CVNEApp *CVNEApp::GetInstance()
@@ -24,6 +25,7 @@ CVNEApp::CVNEApp()
 	pCVNEMenuView		= new CVNEMenuView();
 	pCVNEDetailView		= new CVNEDetailView();
 	pCVNEPlaybackView	= new CVNEPlaybackView();
+	
 	cout << "			CVNEApp::CVNEApp ==========================> Constructor SUCCESSFULL !" << endl;
 }
 
@@ -41,4 +43,5 @@ void CVNEApp::Onload()
 	pCVNEMenuView->OnLoad();
 	pCVNEMenuView->ProcessKeyDown();
 	cout << "			CVNEApp::Onload ==========================> Onload SUCCESSFULL !" << endl;
+	
 }

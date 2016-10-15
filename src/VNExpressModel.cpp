@@ -102,6 +102,7 @@ ListItem* CVNExpressModel::getListVNExpress(string category_id, string limit, st
 				for(int index_menu = 0;index_menu<iSizeItem;index_menu++)
 				{
 					listItems[index_menu].size = iSizeItem;
+					listItems[index_menu].sizepage = (iSizeItem / 8) + (((iSizeItem % 8) == 0) ? 0 : 1);
 					listItems[index_menu].original_cate = list_items[index_menu].get("original_cate", "").asString();
 					listItems[index_menu].title = list_items[index_menu].get("title", "").asString();
 					listItems[index_menu].share_url = list_items[index_menu].get("share_url", "").asString();
