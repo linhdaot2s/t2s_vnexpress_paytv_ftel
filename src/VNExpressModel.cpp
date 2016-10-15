@@ -41,6 +41,7 @@ ListMenu* CVNExpressModel::getMenuVNExpress()
 				for(int index_menu = 0;index_menu<iSizeMenu;index_menu++)
 				{
 					listItems[index_menu].size = iSizeMenu;
+					listItems[index_menu].sizepage = (iSizeMenu / 9) + (((iSizeMenu % 9) == 0) ? 0 : 1);
 					listItems[index_menu].parent_id = menu_items[index_menu].get("parent_id", "").asString();
 					listItems[index_menu].catename = menu_items[index_menu].get("catename", "").asString();
 					listItems[index_menu].catecode = menu_items[index_menu].get("catecode", "").asString();
@@ -56,6 +57,7 @@ ListMenu* CVNExpressModel::getMenuVNExpress()
 						for(int index = 0;index<child.size();index++)
 						{
 							listItems[index_menu].childMenu[index].size = child.size();
+							listItems[index_menu].childMenu[index].sizepage = (child.size() / 9) + (((child.size() % 9) == 0) ? 0 : 1);
 							listItems[index_menu].childMenu[index].parent_id = child[index].get("parent_id", "").asString();
 							listItems[index_menu].childMenu[index].catename = child[index].get("catename", "").asString();
 							listItems[index_menu].childMenu[index].catecode = child[index].get("catecode", "").asString();

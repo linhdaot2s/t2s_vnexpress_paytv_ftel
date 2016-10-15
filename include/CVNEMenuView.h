@@ -3,25 +3,27 @@
 
 #include "CVNEApp.h"
 
-class CVNEApp;
-
 class CVNEMenuView
 {
 public:
 	CVNEMenuView();
 	~CVNEMenuView();
 
+	void OnLoad();
 	void OnInit();
 	void FlipAll();
 	void LoadStartup();
 	void DrawTextMenuPage();
+	void ProcessKeyDown();
+	void LoadItemMenuPage();
 	void DrawItemMenu(int iNumItem);
 	void ShowUpOrDownIcon(int iType);
-	void DrawMenuFocus(int iTypeMenu, int iDirection);
 	void FocusMenuLv1(int iDirection);
 	void FocusMenuLv2(int iDirection);
 	void FocusMenuLv3(int iDirection);
-	void ProcessKeyDown();
+	void DrawMenuFocus(int iTypeMenu, int iDirection);
+
+	ListMenu *pListMenu;
 
 	IDirectFBWindow		*m_wMainWindow;
 	IDirectFBSurface	*m_sfMainWindow;
@@ -31,6 +33,10 @@ public:
 
 	IDirectFBWindow		*m_wMenuFocus;
 	IDirectFBSurface	*m_sfMenuFocus;
+
+	IDirectFBFont		*pSize18;
+	IDirectFBFont	*pSize20;
+	IDirectFBFont		*pSize25;
 
 	int					iPosMenu;
 	int					iPosMenuPage;

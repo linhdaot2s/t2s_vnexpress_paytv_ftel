@@ -7,8 +7,6 @@ CVNEDetailView::CVNEDetailView()
 	m_sfMainView = NULL;
 	m_wMainFocus = NULL;
 	m_sfMainFocus = NULL;
-	this->OnInit();
-	this->LoadStartup();
 	cout << "			CVNEDetailView::CVNEDetailView ==========================> Constructor SUCCESSFULL !" << endl;
 }
 
@@ -40,6 +38,14 @@ void CVNEDetailView::FillRectPic(int iNumPic)
 
 	m_sfMainView->Flip(m_sfMainView, NULL, DSFLIP_WAITFORSYNC);
 	cout << "			CVNEDetailView::FillRectPic ==========================> FillRectPic SUCCESSFULL !" << endl;
+}
+
+void CVNEDetailView::OnLoad()
+{
+	cout << "			CVNEDetailView::OnLoad ==========================> OnLoad !" << endl;
+	this->OnInit();
+	this->LoadStartup();
+	cout << "			CVNEDetailView::OnLoad ==========================> OnLoad SUCCESSFULL !" << endl;
 }
 
 void CVNEDetailView::OnInit()

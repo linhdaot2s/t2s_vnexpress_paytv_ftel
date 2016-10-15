@@ -18,6 +18,7 @@ using namespace std;
 struct ListMenu
 {
 	int size;
+	int sizepage;
 	string parent_id;
 	string catename;
 	string catecode;
@@ -43,6 +44,7 @@ struct ListMenu
 struct ListItem
 {
 	int size;
+	int sizepage;
 	string original_cate;
 	string title;
 	string lead;

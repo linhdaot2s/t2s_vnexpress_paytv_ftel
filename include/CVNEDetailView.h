@@ -10,6 +10,7 @@ public:
 	CVNEDetailView();
 	~CVNEDetailView();
 
+	void OnLoad();
 	void OnInit();
 	void FlipAll();
 	void LoadStartup();

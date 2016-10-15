@@ -9,22 +9,22 @@ CVNEMenuView::CVNEMenuView()
 	m_sfMenu = NULL;
 	m_wMenuFocus = NULL;
 	m_sfMenuFocus = NULL;
+	pListMenu = NULL;
+	pSize18 = NULL;
+	pSize20 = NULL;
+	pSize25 = NULL;
 	iPosMenu = 0;
 	iPosMenuPage = 0;
 	bIsParentMenu = true;
 	bIsTurnOff = false;
-	this->OnInit();
-	this->LoadStartup();
 	cout << "			CVNEMenuView::CVNEMenuView ==========================> Constructor SUCCESSFULL !" << endl;
 }
-
 
 CVNEMenuView::~CVNEMenuView()
 {
 	cout << "			CVNEMenuView::~CVNEMenuView ==========================> Destructor !" << endl;
 	if (m_wMainWindow != NULL) {
 		cout << "			CVNEMenuView::~CVNEMenuView ---> Destroy m_wMainWindow !" << endl;
-		
 		CFBGlobal::m_pGlobal->FBWindowDestroy(m_wMainWindow, m_sfMainWindow);
 		m_wMainWindow = NULL; m_sfMainWindow = NULL;
 		cout << "			CVNEMenuView::~CVNEMenuView ---> Destroy m_wMainWindow  SUCCESSFULL !" << endl;
@@ -41,6 +41,18 @@ CVNEMenuView::~CVNEMenuView()
 		m_wMenuFocus = NULL; m_sfMenuFocus = NULL;
 		cout << "			CVNEMenuView::~CVNEMenuView ---> Destroy m_wMenuFocus  SUCCESSFULL !" << endl;
 	}
+	if (pSize18 != NULL) {
+		CFBGlobal::m_pGlobal->FBFontDestroy(pSize18);
+		pSize18 = NULL;
+	}
+	if (pSize20 != NULL) {
+		CFBGlobal::m_pGlobal->FBFontDestroy(pSize20);
+		pSize20 = NULL;
+	}
+	if (pSize25 != NULL) {
+		CFBGlobal::m_pGlobal->FBFontDestroy(pSize25);
+		pSize25 = NULL;
+	}
 	cout << "			CVNEMenuView::~CVNEMenuView ==========================> Destructor SUCCESSFULL !" << endl;
 }
 
@@ -52,7 +64,7 @@ void CVNEMenuView::OnInit()
 	if (m_wMenu == NULL && m_sfMenu == NULL)
 		CFBGlobal::m_pGlobal->FBWindowCreateWithAlphaChannel(&m_wMenu, NULL, &m_sfMenu, menu_x, menu_y, menu_width, menu_height, 0xff);
 	if (m_wMenuFocus == NULL && m_sfMenuFocus == NULL)
-		CFBGlobal::m_pGlobal->FBWindowCreateWithAlphaChannel(&m_wMenuFocus, NULL, &m_sfMenuFocus, MenuLevel1def[0].x, MenuLevel1def[0].y, MenuLevel1def[0].w, MenuLevel1def[0].h, 0xff);
+		CFBGlobal::m_pGlobal->FBWindowCreateWithAlphaChannel(&m_wMenuFocus, NULL, &m_sfMenuFocus, 0, menu_focus_y, MenuLevel1def[0].w, MenuLevel1def[0].h, 0xff);
 	cout << "			CVNEMenuView::OnInit ==========================> OnInit SUCCESSFULL !" << endl;
 }
 
@@ -74,7 +86,7 @@ void CVNEMenuView::DrawTextMenuPage()
 
 void CVNEMenuView::ShowUpOrDownIcon(int iType)
 {
-	cout << "			CVNEMenuView::DrawItemMenu ==========================> DrawItemMenu !" << endl;
+	cout << "			CVNEMenuView::ShowUpOrDownIcon ==========================> ShowUpOrDownIcon !" << endl;
 	switch (iType) {
 	case 1: {
 		CFBGlobal::m_pGlobal->FBImageCreate(m_sfMenu, Icon_up, menu_up_icon_x, menu_up_icon_y);
@@ -90,7 +102,7 @@ void CVNEMenuView::ShowUpOrDownIcon(int iType)
 		break;
 	}
 	}
-	cout << "			CVNEMenuView::DrawItemMenu ==========================> DrawItemMenu SUCCESSFULL !" << endl;
+	cout << "			CVNEMenuView::ShowUpOrDownIcon ==========================> ShowUpOrDownIcon SUCCESSFULL !" << endl;
 }
 
 void CVNEMenuView::DrawItemMenu(int iNumItem)
@@ -119,26 +131,48 @@ void CVNEMenuView::DrawMenuFocus(int iTypeMenu, int iDirection)
 	cout << "			CVNEMenuView::DrawMenuFocus ==========================> DrawMenuFocus SUCCESSFULL !" << endl;
 }
 
+void CVNEMenuView::OnLoad()
+{
+	cout << "			CVNEMenuView::OnLoad ==========================> OnLoad !" << endl;
+	pListMenu = CVNEApp::GetInstance()->pCVNExpressModel->getMenuVNExpress();
+	cout << "			CVNEMenuView::OnLoad ==========================> OnLoad  !    "<< pListMenu->size<<"  "<< pListMenu->sizepage << endl;
+	if (pListMenu->size >= 1)
+		iPosMenuPage = 1;
+	if (pListMenu != NULL) {
+		bool bCheck = CFBGlobal::m_pGlobal->FBFontCreate(&pSize18, "Roboto-Regular.ttf", 18);
+		cout << endl << endl << endl << endl << bCheck << endl << endl;
+		bCheck=CFBGlobal::m_pGlobal->FBFontCreate(&pSize20, "Roboto-Regular.ttf", 20);
+		cout << endl << endl << endl << endl << bCheck << endl << endl;
+
+		bCheck=CFBGlobal::m_pGlobal->FBFontCreate(&pSize25, "Roboto-Bold.ttf", 25);
+		cout << endl << endl << endl << endl << bCheck << endl << endl;
+		this->OnInit();
+		this->LoadStartup();
+		this->LoadItemMenuPage();
+	}
+	cout << "			CVNEMenuView::OnLoad ==========================> OnLoad SUCCESSFULL !" << endl;
+}
+
 void CVNEMenuView::FocusMenuLv1(int iDirection)
 {
 	cout << "			CVNEMenuView::FocusMenuLv1 ==========================> FocusMenuLv1 !" << endl;
 	switch (iDirection) {
 	case MOVE_UP: {
 		m_sfMenuFocus->Clear(m_sfMenuFocus, 0, 0, 0, 0);
-		CFBGlobal::m_pGlobal->FBImageCreate(m_sfMenuFocus, Icon_menufocus, 0, 0);
-		m_wMenuFocus->MoveTo(m_wMenuFocus, MenuLevel1def[iPosMenu % 9].x, MenuLevel1def[iPosMenu % 9].y);
+		CFBGlobal::m_pGlobal->FBImageCreate(m_sfMenuFocus, Icon_menufocus, 0, 0, menu_item_width, menu_item_height);
+		m_wMenuFocus->MoveTo(m_wMenuFocus, 0, MenuLevel1def[iPosMenu % 9].y + menu_focus_y);
 		break;
 	}
 	case MOVE_DOWN: {
 		m_sfMenuFocus->Clear(m_sfMenuFocus, 0, 0, 0, 0);
-		CFBGlobal::m_pGlobal->FBImageCreate(m_sfMenuFocus, Icon_menufocus, 0, 0);
-		m_wMenuFocus->MoveTo(m_wMenuFocus, MenuLevel1def[iPosMenu % 9].x, MenuLevel1def[iPosMenu % 9].y);
+		CFBGlobal::m_pGlobal->FBImageCreate(m_sfMenuFocus, Icon_menufocus, 0, 0, menu_item_width, menu_item_height);
+		m_wMenuFocus->MoveTo(m_wMenuFocus, 0, MenuLevel1def[iPosMenu % 9].y + menu_focus_y);
 		break;
 	}
 	case MOVE_NOTHING: {
 		m_sfMenuFocus->Clear(m_sfMenuFocus, 0, 0, 0, 0);
-		CFBGlobal::m_pGlobal->FBImageCreate(m_sfMenuFocus, Icon_menufocus, 0, 0);
-		m_wMenuFocus->MoveTo(m_wMenuFocus, MenuLevel1def[iPosMenu % 9].x, MenuLevel1def[iPosMenu % 9].y);
+		CFBGlobal::m_pGlobal->FBImageCreate(m_sfMenuFocus, Icon_menufocus, 0, 0, menu_item_width, menu_item_height);
+		m_wMenuFocus->MoveTo(m_wMenuFocus, 0, MenuLevel1def[iPosMenu % 9].y + menu_focus_y);
 		break;
 	}
 	}
@@ -148,12 +182,14 @@ void CVNEMenuView::FocusMenuLv1(int iDirection)
 void CVNEMenuView::FocusMenuLv2(int iDirection)
 {
 	cout << "			CVNEMenuView::FocusMenuLv2 ==========================> FocusMenuLv2 !" << endl;
+
 	cout << "			CVNEMenuView::FocusMenuLv2 ==========================> FocusMenuLv2 SUCCESSFULL !" << endl;
 }
 
 void CVNEMenuView::FocusMenuLv3(int iDirection)
 {
 	cout << "			CVNEMenuView::FocusMenuLv3 ==========================> FocusMenuLv3 !" << endl;
+
 	cout << "			CVNEMenuView::FocusMenuLv3 ==========================> FocusMenuLv3 SUCCESSFULL !" << endl;
 }
 
@@ -164,8 +200,6 @@ void CVNEMenuView::LoadStartup()
 	m_sfMainWindow->Flip(m_sfMainWindow, NULL, DSFLIP_WAITFORSYNC);
 	m_sfMainWindow->Clear(m_sfMainWindow, 0x00, 0x00, 0x00, 0x00);
 	CFBGlobal::m_pGlobal->FBImageCreate(m_sfMainWindow, Images_background, 0, 0);
-	this->ShowUpOrDownIcon(3);
-	this->DrawItemMenu(9);
 	this->DrawTextMenuPage();
 	this->DrawMenuFocus(MENU_LEVEL_1, MOVE_NOTHING);
 	cout << "			CVNEMenuView::LoadStartup ==========================> LoadStartup SUCCESSFULL !" << endl;
@@ -212,4 +246,40 @@ void CVNEMenuView::ProcessKeyDown()
 		}
 	}
 	cout << "			CVNEMenuView::ProcessKeyDown ==========================> ProcessKeyDown SUCCESSFULL !" << endl;
+}
+
+void CVNEMenuView::LoadItemMenuPage()
+{
+	cout << "			CVNEMenuView::LoadItemMenuPage ==========================> LoadItemMenuPage !" << endl;
+	m_sfMenu->Clear(m_sfMenu, 0, 0, 0, 0);
+	m_sfMenu->SetFont(m_sfMenu, pSize25);
+	if (iPosMenuPage == 1) {
+		if (pListMenu->size < 10) {
+			cout << "			CVNEMenuView::LoadItemMenuPage ---> less than 10 item !" << endl;
+			this->DrawItemMenu(pListMenu->size);
+			for (int iIndex = 0; iIndex < pListMenu->size; iIndex++) 
+				CFBGlobal::m_pGlobal->DrawTextMulti(m_sfMenu, pSize25, pListMenu->catename.c_str(),
+					125, 11, 250, VNE_BLACK, (DFBSurfaceTextFlags)DSTF_TOPCENTER, false, 1);
+		}
+		else {
+			cout << "			CVNEMenuView::LoadItemMenuPage ---> bigger than 10 item !" << endl;
+			this->ShowUpOrDownIcon(2);
+			this->DrawItemMenu(8);
+			for (int iIndex = 0; iIndex < 9; iIndex++) {
+				cout << endl << iIndex << endl;
+				cout << endl<<iIndex << endl <<" ===== "<< pListMenu->catename.c_str() << endl;
+				//CFBGlobal::m_pGlobal->DrawText(m_sfMenu, pSize25, "123", );
+				CFBGlobal::m_pGlobal->DrawTextMulti(m_sfMenu, pSize25, "123",
+					125, 11, 250, VNE_BLACK, (DFBSurfaceTextFlags) DSTF_TOPCENTER, false, 1);
+			}
+		}
+		m_sfMenu->Flip(m_sfMenu, NULL, DSFLIP_WAITFORSYNC);
+	}
+	else if (iPosMenuPage > 1 && iPosMenuPage < pListMenu->sizepage) {
+
+	}
+	else if (iPosMenuPage == pListMenu->sizepage) {
+
+	}
+	cout << "			CVNEMenuView::LoadItemMenuPage ==========================> LoadItemMenuPage SUCCESSFULL !" << endl;
 }

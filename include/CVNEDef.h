@@ -87,6 +87,8 @@ static SPosition Picdef[] =
 #define menu_item_first_x  0
 #define menu_item_first_y  62
 
+#define menu_focus_y 85
+
 #define menu_item_width  250
 #define menu_item_height  58
 //----------------------------
