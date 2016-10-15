@@ -1,6 +1,6 @@
-
+include buildFlag.env
 .PHONY: all release clean shared
-export CBOX_MAIN_DIR=/home/kiennt/share/vnexpress_dev
+
 all:
 	$(MAKE) -C . -f Makefile.app
 clean:

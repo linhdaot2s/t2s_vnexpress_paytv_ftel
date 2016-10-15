@@ -16,7 +16,11 @@ SRCS  = VNExpress.cpp \
 		$(LIBS_APP)/requestdata/requestdata.cpp \
  		$(LIBS_APP)/jsoncpp-1.7.7/src/lib_json/json_reader.cpp \
         $(LIBS_APP)/jsoncpp-1.7.7/src/lib_json/json_value.cpp \
-        $(LIBS_APP)/jsoncpp-1.7.7/src/lib_json/json_writer.cpp
+        $(LIBS_APP)/jsoncpp-1.7.7/src/lib_json/json_writer.cpp \
+		$(CBOX_MAIN_DIR)/src/CVNEMenuView.cpp  \
+		$(CBOX_MAIN_DIR)/src/CVNEDetailView.cpp  \
+		$(CBOX_MAIN_DIR)/src/CVNEPlaybackView.cpp  \
+		$(CBOX_MAIN_DIR)/src/CVNEApp.cpp
 
 
 ###############################################################################
