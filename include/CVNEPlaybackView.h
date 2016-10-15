@@ -22,8 +22,6 @@ public:
 	void drawTextItems(const char *pText, int iSize, int iX, int iY, IDirectFBSurface* fb_sfText, IDirectFBFont* fb_fText, DFBColor fb_clText, int iRow);
 	bool bIsTurnOff;
 
-	CFBGlobal *pCFBGlobal;
-
 	IDirectFBWindow		*m_wMediaPlayer;
 	IDirectFBSurface	*m_sfMediaPlayer;
 	IDirectFBWindow		*m_wMediaPlayerData;

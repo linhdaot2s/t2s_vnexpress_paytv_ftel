@@ -15,6 +15,7 @@ CVNEApp *CVNEApp::GetInstance()
 CVNEApp::CVNEApp()
 {
 	cout << "			CVNEApp::CVNEApp ==========================> Constructor !" << endl;
+	m_pGlobal							= CFBGlobal::FBSingletonGlobalInit();
 	pCVNEMenuView = NULL;
 	pCVNEDetailView = NULL;
 	pCVNExpressModel = NULL;
