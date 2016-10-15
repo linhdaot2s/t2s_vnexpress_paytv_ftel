@@ -94,7 +94,6 @@ ListItem* CVNExpressModel::getListVNExpress(string category_id, string limit, st
 			Json::Value root_items = root.get("data", Json::arrayValue);
 			Json::Value list_items = root_items.get(category_id, Json::arrayValue);
 			int iSizeItem = list_items.size();
-			fprintf(stderr,"\n==============:3333333333336666666666677777777: %d \n",iSizeItem);
 			if(iSizeItem > 0)
 			{
 				listItems = new ListItem[iSizeItem];
@@ -103,32 +102,48 @@ ListItem* CVNExpressModel::getListVNExpress(string category_id, string limit, st
 					listItems[index_menu].size = iSizeItem;
 					listItems[index_menu].original_cate = list_items[index_menu].get("original_cate", "").asString();
 					listItems[index_menu].title = list_items[index_menu].get("title", "").asString();
-					listItems[index_menu].lead = list_items[index_menu].get("lead", "").asString();
 					listItems[index_menu].share_url = list_items[index_menu].get("share_url", "").asString();
 					listItems[index_menu].thumbnail_url = list_items[index_menu].get("thumbnail_url", "").asString();
 					listItems[index_menu].publish_time = list_items[index_menu].get("publish_time", "").asString();
 					listItems[index_menu].article_id = list_items[index_menu].get("article_id", "").asString();
-					Json::Value list_reference = list_items.get("list_reference", Json::arrayValue);
-					fprintf(stderr,"==========222222222===list_reference : %d \n",list_reference);
-					if(list_reference.size() > 0)
-					{
-						Json::Value arti = list_reference.get("article", Json::arrayValue);
-						fprintf(stderr,"========111111111111=====article : %d \n",arti);
-						if(arti.size() > 0)
-						{
-							listItems[index_menu].article = new string[arti.size()];
-							for(int index = 0;index < arti.size();index++)
-							{
-								listItems[index_menu].article[index] = arti[index].get("article", "").asString();
-								fprintf(stderr,"=============trungggggggggg : %s \n",listItems[index_menu].article[index].c_str());
-							}
-						}
-					}
 				}
 			}
-			fprintf(stderr,"\ntrung kienenenenen====================== %d \n", iSizeItem);
 	}
 	return listItems;
+}
+DetailItem *CVNExpressModel::getDetailVNExpress(string article_id)
+{
+	Json::Value root;
+	Json::Reader reader;
+	DetailItem *detailItems = NULL;
+	string response = CRequestData::getData("http://api.openfpt.vn/vne/article?api_key=feedc4d1b6d94310a12e93efa794ca27&article_id="+article_id);
+	bool bParsingSuccessful = reader.parse(response.c_str(), root);
+	bool checkJson = root.isObject();
+	if (!bParsingSuccessful || !checkJson)
+	{
+			return detailItems;
+	}
+	else
+	{
+			Json::Value root_items = root.get("data", Json::arrayValue);
+			int iSizeItem = root_items.size();
+			if(iSizeItem > 0)
+			{
+				int index_detail = 0;
+				detailItems = new DetailItem[iSizeItem];
+				detailItems[index_detail].size = iSizeItem;
+				Json::Value k = root.get("original_cate", Json::arrayValue);
+				detailItems[index_detail].original_cate = root_items.get("original_cate", "").asString();
+				detailItems[index_detail].title = root_items.get("title", "").asString();
+				detailItems[index_detail].share_url = root_items.get("share_url", "").asString();
+				detailItems[index_detail].thumbnail_url = root_items.get("thumbnail_url", "").asString();
+				detailItems[index_detail].publish_time = root_items.get("publish_time", "").asString();
+				detailItems[index_detail].article_id = root_items.get("article_id", "").asString();
+				detailItems[index_detail].content = root_items.get("content", "").asString();
+
+			}
+	}
+	return detailItems;
 }
 
 

@@ -40,9 +40,6 @@ struct ListMenu
 		}
 	}
 };
-struct StArticle
-{
-};
 struct ListItem
 {
 	int size;
@@ -53,18 +50,29 @@ struct ListItem
 	string thumbnail_url;
 	string publish_time;
 	string article_id;
-	string *article;
 	ListItem()
 	{
-		article = NULL;
 	}
 	~ListItem()
 	{
-		if(article != NULL)
-		{
-			delete[] article;
-			article = NULL;
-		}
+	}
+};
+struct DetailItem
+{
+	int size;
+	string original_cate;
+	string title;
+	string lead;
+	string share_url;
+	string thumbnail_url;
+	string publish_time;
+	string article_id;
+	string content;
+	DetailItem()
+	{
+	}
+	~DetailItem()
+	{
 	}
 };
 class CVNExpressModel
@@ -75,6 +83,7 @@ public:
 	string IntToString(int iNumber);
 	ListMenu *getMenuVNExpress();
 	ListItem *getListVNExpress(string category_id, string limit, string offset);
+	DetailItem *getDetailVNExpress(string article_id);
 
 };
 
