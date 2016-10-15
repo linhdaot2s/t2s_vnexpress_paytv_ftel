@@ -251,6 +251,7 @@ void CVNEMenuView::ProcessKeyDown()
 void CVNEMenuView::LoadItemMenuPage()
 {
 	cout << "			CVNEMenuView::LoadItemMenuPage ==========================> LoadItemMenuPage !" << endl;
+	int iHeight = 58;
 	m_sfMenu->Clear(m_sfMenu, 0, 0, 0, 0);
 	m_sfMenu->SetFont(m_sfMenu, pSize25);
 	if (iPosMenuPage == 1) {
@@ -258,20 +259,16 @@ void CVNEMenuView::LoadItemMenuPage()
 			cout << "			CVNEMenuView::LoadItemMenuPage ---> less than 10 item !" << endl;
 			this->DrawItemMenu(pListMenu->size);
 			for (int iIndex = 0; iIndex < pListMenu->size; iIndex++) 
-				CFBGlobal::m_pGlobal->DrawTextMulti(m_sfMenu, pSize25, pListMenu->catename.c_str(),
-					125, 11, 250, VNE_BLACK, (DFBSurfaceTextFlags)DSTF_TOPCENTER, false, 1);
+				CFBGlobal::m_pGlobal->DrawTextMulti(m_sfMenu, pSize25, pListMenu[iIndex].catename.c_str(),
+					125, 73 + iHeight * iIndex, 250, VNE_BLACK, (DFBSurfaceTextFlags)DSTF_TOPCENTER, false, 1);
 		}
 		else {
 			cout << "			CVNEMenuView::LoadItemMenuPage ---> bigger than 10 item !" << endl;
 			this->ShowUpOrDownIcon(2);
-			this->DrawItemMenu(8);
-			for (int iIndex = 0; iIndex < 9; iIndex++) {
-				cout << endl << iIndex << endl;
-				cout << endl<<iIndex << endl <<" ===== "<< pListMenu->catename.c_str() << endl;
-				//CFBGlobal::m_pGlobal->DrawText(m_sfMenu, pSize25, "123", );
-				CFBGlobal::m_pGlobal->DrawTextMulti(m_sfMenu, pSize25, "123",
-					125, 11, 250, VNE_BLACK, (DFBSurfaceTextFlags) DSTF_TOPCENTER, false, 1);
-			}
+			this->DrawItemMenu(9);
+			for (int iIndex = 0; iIndex < 9; iIndex++)
+				CFBGlobal::m_pGlobal->DrawTextMulti(m_sfMenu, pSize25, pListMenu[iIndex].catename.c_str(),
+					125, 73 + iHeight * iIndex, 250, VNE_BLACK, (DFBSurfaceTextFlags) DSTF_TOPCENTER, false, 1);
 		}
 		m_sfMenu->Flip(m_sfMenu, NULL, DSFLIP_WAITFORSYNC);
 	}
