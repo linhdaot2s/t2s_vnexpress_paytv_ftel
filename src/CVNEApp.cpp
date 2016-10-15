@@ -26,24 +26,50 @@ CVNEApp::CVNEApp()
 	pCVNEPlaybackView	= new CVNEPlaybackView();
 	cout << "			CVNEApp::CVNEApp ==========================> Constructor SUCCESSFULL !" << endl;
 }
-
-
+void CVNEApp::saveListItem(string sID, string sTitle)
+{
+	if(listSave.size() > 9)
+	{
+		cout << "			CVNEApp::saveListItem ===========";
+		listSave.pop_back();
+	}
+	else
+	{
+		cout << "			CVNEApp::saveListItem ===========";
+		ListSave listsave;
+		listsave.sIDItem = sID;
+		listsave.sTitleItem = sTitle;
+		listSave.push_front(listsave);
+	}
+}
 CVNEApp::~CVNEApp()
 {
 	cout << "			CVNEApp::~CVNEApp ==========================> Destructor !" << endl;
-	
 	cout << "			CVNEApp::~CVNEApp ==========================> Destructor SUCCESSFULL !" << endl;
 }
 
 void CVNEApp::Onload()
 {
 	cout << "			CVNEApp::Onload ==========================> Onload 23232 !" << endl;
-	pCVNEMenuView->OnLoad();
-	pCVNEDetailView->OnLoad();
+	this->saveListItem("3465014","1Bộ xương cá voi lưng gù cá voi lưng gù  ");
+	this->saveListItem("3465014","2Bộ xương cá voi lưng gù cá voi lưng gù ");
+	this->saveListItem("3465014","3Bộ xương cá voi lưng gù cá voi lưng gù ");
+	this->saveListItem("3465014","4Bộ xương cá voi lưng gù cá voi lưng gù ");
+	this->saveListItem("3465014","5Bộ xương cá voi lưng gù cá voi lưng gù ");
+	this->saveListItem("3465014","6Bộ xương cá voi lưng gù cá voi lưng gù ");
+	this->saveListItem("3465014","7Bộ xương cá voi lưng gù cá voi lưng gù ");
+	this->saveListItem("3465014","8Bộ xương cá voi lưng gù cá voi lưng gù ");
+	this->saveListItem("3465014","9Bộ xương cá voi lưng gù cá voi lưng gù ");
+	this->saveListItem("3465014","10Bộ xương cá voi lưng gù cá voi lưng gù ");
+	this->saveListItem("3465014","11Bộ xương cá voi lưng gù cá voi lưng gù ");
 
-	pCVNEMenuView->FlipAll();
-	pCVNEDetailView->FlipAll();
-	pCVNEPlaybackView->FlipAll();
-	pCVNEMenuView->ProcessKeyDown();
+
+	pCVNEPlaybackView->OnLoad();
+//	pCVNEDetailView->OnLoad();
+//
+//	pCVNEMenuView->FlipAll();
+//	pCVNEDetailView->FlipAll();
+//	pCVNEPlaybackView->FlipAll();
+	pCVNEPlaybackView->ProcessKeyDown();
 	cout << "			CVNEApp::Onload ==========================> Onload SUCCESSFULL !" << endl;
 }
