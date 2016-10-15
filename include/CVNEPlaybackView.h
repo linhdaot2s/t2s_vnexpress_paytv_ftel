@@ -15,6 +15,8 @@ public:
 	void LoadStartup();
 	void ShowPlayBar(bool bIsShow);
 
+	CFBGlobal *pCFBGlobal;
+
 	IDirectFBWindow		*m_wMediaPlayer;
 	IDirectFBSurface	*m_sfMediaPlayer;
 };

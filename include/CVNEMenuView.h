@@ -15,7 +15,7 @@ public:
 	void LoadStartup();
 	void DrawTextMenuPage();
 	void ProcessKeyDown();
-	void LoadItemMenuPage();
+	void LoadPageItemMenuLv1();
 	void DrawItemMenu(int iNumItem);
 	void ShowUpOrDownIcon(int iType);
 	void FocusMenuLv1(int iDirection);
@@ -24,6 +24,7 @@ public:
 	void DrawMenuFocus(int iTypeMenu, int iDirection);
 
 	ListMenu *pListMenu;
+	CFBGlobal *pCFBGlobal;
 
 	IDirectFBWindow		*m_wMainWindow;
 	IDirectFBSurface	*m_sfMainWindow;
@@ -35,12 +36,12 @@ public:
 	IDirectFBSurface	*m_sfMenuFocus;
 
 	IDirectFBFont		*pSize18;
-	IDirectFBFont	*pSize20;
+	IDirectFBFont		*pSize20;
 	IDirectFBFont		*pSize25;
 
 	int					iPosMenu;
 	int					iPosMenuPage;
-	bool				bIsParentMenu;
+	int					iPosMenuLevel;
 	bool				bIsTurnOff;
 };
 

@@ -7,6 +7,7 @@ CVNEDetailView::CVNEDetailView()
 	m_sfMainView = NULL;
 	m_wMainFocus = NULL;
 	m_sfMainFocus = NULL;
+	pCFBGlobal = CFBGlobal::FBSingletonGlobalInit();
 	cout << "			CVNEDetailView::CVNEDetailView ==========================> Constructor SUCCESSFULL !" << endl;
 }
 
@@ -16,13 +17,13 @@ CVNEDetailView::~CVNEDetailView()
 	cout << "			CVNEDetailView::~CVNEDetailView ==========================> Destructor !" << endl;
 	if (m_wMainView != NULL) {
 		cout << "			CVNEDetailView::~CVNEDetailView ---> Destroy m_wMainView !" << endl;
-		CFBGlobal::m_pGlobal->FBWindowDestroy(m_wMainView, m_sfMainView);
+		pCFBGlobal->FBWindowDestroy(m_wMainView, m_sfMainView);
 		m_wMainView = NULL; m_sfMainView = NULL;
 		cout << "			CVNEDetailView::~CVNEDetailView ---> Destroy m_wMainView  SUCCESSFULL !" << endl;
 	}
 	if (m_wMainFocus != NULL) {
 		cout << "			CVNEDetailView::~CVNEDetailView ---> Destroy m_wMainFocus !" << endl;
-		CFBGlobal::m_pGlobal->FBWindowDestroy(m_wMainFocus, m_sfMainFocus);
+		pCFBGlobal->FBWindowDestroy(m_wMainFocus, m_sfMainFocus);
 		m_wMainFocus = NULL; m_sfMainFocus = NULL;
 		cout << "			CVNEDetailView::~CVNEDetailView ---> Destroy m_wMainFocus  SUCCESSFULL !" << endl;
 	}
@@ -52,7 +53,7 @@ void CVNEDetailView::OnInit()
 {
 	cout << "			CVNEDetailView::OnInit ==========================> OnInit !" << endl;
 	if (m_wMainView == NULL && m_sfMainView == NULL)
-		CFBGlobal::m_pGlobal->FBWindowCreateWithAlphaChannel(&m_wMainView, NULL, &m_sfMainView, list_x, list_y, list_width, list_height, 0xff);
+		pCFBGlobal->FBWindowCreateWithAlphaChannel(&m_wMainView, NULL, &m_sfMainView, list_x, list_y, list_width, list_height, 0xff);
 	cout << "			CVNEDetailView::OnInit ==========================> OnInit SUCCESSFULL !" << endl;
 }
 
@@ -81,16 +82,16 @@ void CVNEDetailView::ShowUpOrDownIcon(int iType)
 	cout << "			CVNEDetailView::ShowUpOrDownIcon ==========================> ShowUpOrDownIcon !" << endl;
 	switch (iType) {
 	case 1: {
-		CFBGlobal::m_pGlobal->FBImageCreate(m_sfMainView, Icon_up, detail_up_icon_x, detail_up_icon_y);
+		pCFBGlobal->FBImageCreate(m_sfMainView, Icon_up, detail_up_icon_x, detail_up_icon_y);
 		break;
 	}
 	case 2: {
-		CFBGlobal::m_pGlobal->FBImageCreate(m_sfMainView, Icon_down, detail_down_icon_x, detail_down_icon_y);
+		pCFBGlobal->FBImageCreate(m_sfMainView, Icon_down, detail_down_icon_x, detail_down_icon_y);
 		break;
 	}
 	case 3: {
-		CFBGlobal::m_pGlobal->FBImageCreate(m_sfMainView, Icon_up, detail_up_icon_x, detail_up_icon_y);
-		CFBGlobal::m_pGlobal->FBImageCreate(m_sfMainView, Icon_down, detail_down_icon_x, detail_down_icon_y);
+		pCFBGlobal->FBImageCreate(m_sfMainView, Icon_up, detail_up_icon_x, detail_up_icon_y);
+		pCFBGlobal->FBImageCreate(m_sfMainView, Icon_down, detail_down_icon_x, detail_down_icon_y);
 		break;
 	}
 	}

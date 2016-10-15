@@ -18,6 +18,8 @@ public:
 	void FillRectPic(int iNumPic);
 	void ShowUpOrDownIcon(int iType);
 
+	CFBGlobal *pCFBGlobal;
+
 	IDirectFBWindow		*m_wMainView;
 	IDirectFBSurface	*m_sfMainView;
 	IDirectFBWindow		*m_wMainFocus;

@@ -22,13 +22,11 @@ using namespace std;
 
 class CVNEApp
 {
-
 	static CVNEApp  *pApp;
 public:
 	CVNEApp();
 	~CVNEApp();
 	void Onload();
-	CFBGlobal		 *m_pGlobal;
 	static CVNEApp   *GetInstance();
 	CVNEMenuView	 *pCVNEMenuView;
 	CVNExpressModel	 *pCVNExpressModel;
