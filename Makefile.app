@@ -5,13 +5,16 @@ $(error Error: SMPAPI_DIR is not defined, please source build.env in the SAPI tr
 endif
 
 LIBS_APP = libs
+
 include $(SMPAPI_DIR)/smpapi.defs
 
 LIBRARY_SIGMA_DIR = $(CBOX_MAIN_DIR)/../sigma_extension
 TARGET= VNExpress
 ##################################### Main #####################################
-SRCS  =  VNExpress.cpp \
- 	$(LIBS_APP)/jsoncpp-1.7.7/src/lib_json/json_reader.cpp \
+SRCS  = VNExpress.cpp \
+		src/VNExpressModel.cpp \
+		$(LIBS_APP)/requestdata/requestdata.cpp \
+ 		$(LIBS_APP)/jsoncpp-1.7.7/src/lib_json/json_reader.cpp \
         $(LIBS_APP)/jsoncpp-1.7.7/src/lib_json/json_value.cpp \
         $(LIBS_APP)/jsoncpp-1.7.7/src/lib_json/json_writer.cpp
 
@@ -46,7 +49,8 @@ RMCFLAGS += \
 INCLUDES += \
 	-I$(CBOX_MAIN_DIR)/include \
 	-I$(CURL_LIBDIR)/include \
-	-I$(LIBS_APP)/jsoncpp-1.7.7/include
+	-I$(LIBS_APP)/jsoncpp-1.7.7/include \
+	-I$(LIBS_APP)/requestdata
 	
 INCLUDES += \
 	-I$(GSTREAMER_DIR) \
