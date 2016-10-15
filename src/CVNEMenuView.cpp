@@ -18,6 +18,7 @@ CVNEMenuView::CVNEMenuView()
 	iPosMenuLevel = 1;
 	bIsTurnOff = false;
 	pCFBGlobal = CFBGlobal::FBSingletonGlobalInit();
+	this->OnInit();
 	cout << "			CVNEMenuView::CVNEMenuView ==========================> Constructor SUCCESSFULL !" << endl;
 }
 
@@ -143,7 +144,6 @@ void CVNEMenuView::OnLoad()
 		pCFBGlobal->FBFontCreate(&pSize18, "Roboto-Regular.ttf", 18);
 		pCFBGlobal->FBFontCreate(&pSize20, "Roboto-Regular.ttf", 20);
 		pCFBGlobal->FBFontCreate(&pSize25, "Roboto-Bold.ttf", 25);
-		this->OnInit();
 		this->LoadStartup();
 		this->LoadPageItemMenuLv1();
 		this->FlipAll();
@@ -210,9 +210,11 @@ void CVNEMenuView::LoadStartup()
 	cout << "			CVNEMenuView::LoadStartup ==========================> LoadStartup SUCCESSFULL !" << endl;
 }
 
+
 void CVNEMenuView::ProcessKeyDown()
 {
 	cout << "			CVNEMenuView::ProcessKeyDown ==========================> ProcessKeyDown !" << endl;
+	m_wMenuFocus->SetOpacity(m_wMenuFocus, 0xff);
 	while (!bIsTurnOff) {
 		DFBInputEvent event;
 		if (CFBGlobal::events->GetEvent(CFBGlobal::events, DFB_EVENT(&event)) == DFB_OK) {
@@ -225,7 +227,8 @@ void CVNEMenuView::ProcessKeyDown()
 				}
 				case DIKS_CURSOR_RIGHT: {
 					cout << "			CVNEMenuView::ProcessKeyDown ---> key RIGHT !" << endl;
-
+					m_wMenuFocus->SetOpacity(m_wMenuFocus, 0);
+					CVNEApp::GetInstance()->pCVNEDetailView->ProcessKeyDown();
 					break;
 				}
 				case DIKS_CURSOR_UP: {
@@ -280,7 +283,7 @@ void CVNEMenuView::ProcessKeyDown()
 				}
 				case DIKS_RETURN: {
 					cout << "			CVNEMenuView::ProcessKeyDown ---> key OK !" << endl;
-
+					CVNEApp::GetInstance()->pCVNEDetailView->OnLoad(pListMenu[iPosMenu].category_id);
 					break;
 				}
 				}

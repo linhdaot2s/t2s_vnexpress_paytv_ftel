@@ -13,10 +13,14 @@ public:
 	void OnInit();
 	void FlipAll();
 	void LoadStartup();
+	void DrawFocusInfo();
 	void DrawTextInfoPage();
+	void CancelThreadPicture();
 	void FillRectPic(int iNumPic);
 	void ShowUpOrDownIcon(int iType);
 	static void* createPthreadShowItemsChangePage(void *vshowItemsChangePage);
+
+	void ProcessKeyDown();
 
 	pthread_t pLoadPic;
 	IDirectFBFont		*pSize18;
@@ -33,6 +37,7 @@ public:
 
 	int					iPosInfo;
 	int					iPosInfoPage;
+	bool				bIsBreak;
 };
 
 #endif // !__CVNEDetailView_h__
