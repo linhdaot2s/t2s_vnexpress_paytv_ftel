@@ -146,6 +146,9 @@ void CVNEMenuView::OnLoad()
 		this->OnInit();
 		this->LoadStartup();
 		this->LoadPageItemMenuLv1();
+		this->FlipAll();
+		CVNEApp::GetInstance()->pCVNEDetailView->OnLoad(pListMenu->category_id);
+		
 	}
 	cout << "			CVNEMenuView::OnLoad ==========================> OnLoad SUCCESSFULL !" << endl;
 }

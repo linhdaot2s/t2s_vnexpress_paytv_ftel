@@ -82,6 +82,21 @@ static SPosition Picdef[] =
 };
 //------------------------------------
 
+//--------------Pic position----------
+static SPosition TextDef[] =
+{
+	//draw menu header
+	/*0*/{ 125, 247 },
+	/*1*/{ 375, 247 },
+	/*2*/{ 625, 247 },
+	/*3*/{ 875, 247 },
+	/*4*/{ 125, 602 },
+	/*5*/{ 375, 602 },
+	/*6*/{ 625, 602 },
+	/*7*/{ 875, 602 }
+};
+//------------------------------------
+
 //============Define icon==============
 //-------Item menu------------
 #define menu_item_first_x  0
@@ -118,7 +133,7 @@ const DFBColor VNE_BLACK = { 255, 0, 0, 5 };
 
 //------ define logo ---------------
 #define Images_startup "./images/logo/Startup.jpg"
-#define Images_background "./images/logo/background.jpg"
+#define Images_background "./images/logo/background.png"
 //--------------------------------------
 
 //------ define playback ---------------
