@@ -43,6 +43,7 @@ public:
 	int					iPosMenuPage;
 	int					iPosMenuLevel;
 	bool				bIsTurnOff;
+	bool				bIsListView;
 };
 
 #endif // !__CVNEMenuView_h__

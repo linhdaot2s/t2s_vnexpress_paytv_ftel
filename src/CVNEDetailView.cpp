@@ -16,7 +16,7 @@ CVNEDetailView::CVNEDetailView()
 	pSize20 = NULL;
 	pSize25 = NULL;
 	bIsBreak = false;
-
+	bListView = true;
 	pCFBGlobal = CFBGlobal::FBSingletonGlobalInit();
 	this->OnInit();
 }
@@ -128,7 +128,7 @@ void CVNEDetailView::DrawFocusText()
 	printf("				CVNEDetailView::DrawFocusText ==============================================> Draw focus text SUCCESSFULL !\n");
 }
 
-void CVNEDetailView::ProcessKeyDown()
+bool CVNEDetailView::ProcessKeyDown()
 {
 	cout << "			CVNEDetailView::ProcessKeyDown ==========================> ProcessKeyDown !" << endl;
 	bIsBreak = false;
@@ -140,12 +140,13 @@ void CVNEDetailView::ProcessKeyDown()
 				switch (event.key_symbol) {
 				case DIKS_CURSOR_LEFT: {
 					cout << "			CVNEDetailView::ProcessKeyDown ---> key LEFT !" << endl;
-					
+					return false;
 					break;
 				}
 				case DIKS_CURSOR_RIGHT: {
 					cout << "			CVNEDetailView::ProcessKeyDown ---> key RIGHT !" << endl;
-					
+					CVNEApp::GetInstance()->pCVNEPlaybackView->OnLoad();
+					CVNEApp::GetInstance()->pCVNEPlaybackView->ProcessKeyDown();
 					break;
 				}
 				case DIKS_CURSOR_UP: {
@@ -182,6 +183,20 @@ void CVNEDetailView::ProcessKeyDown()
 					}
 					m_wMainView->SetOpacity(m_wMainView, 0);
 					bIsBreak = true;
+					return true;
+					break;
+				}
+				case DIKS_AUDIO: {
+					bool bCheckState = CVNEApp::GetInstance()->gst->checkState(1);
+					if (bCheckState)
+						CVNEApp::GetInstance()->gst->close();
+
+					CVNEApp::GetInstance()->gst->openLinks(CVNEApp::GetInstance()->pCVNExpressModel->postGetLinkPlay(pParseHTML->getStringParseHTML(), "0").c_str());
+					CVNEApp::GetInstance()->saveListItem(pDetailItem->article_id, pDetailItem->title);
+					break;
+				}
+				case DIKS_STOP: {
+					CVNEApp::GetInstance()->gst->close();
 					break;
 				}
 				}

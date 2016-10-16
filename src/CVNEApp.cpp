@@ -20,13 +20,13 @@ CVNEApp::CVNEApp()
 	pCVNEDetailView = NULL;
 	pCVNExpressModel = NULL;
 	pCVNEPlaybackView = NULL;
+	m_pLoading = CLoading::getCLoading();
 	gst = new GStreamerPlayer();
 	pCVNExpressModel	= new CVNExpressModel();
 	pCVNEMenuView		= new CVNEMenuView();
 	pCVNEListView		= new CVNEListView();
 	pCVNEDetailView		= new CVNEDetailView();
 	pCVNEPlaybackView	= new CVNEPlaybackView();
-	m_pLoading = CLoading::getCLoading();
 	cout << "			CVNEApp::CVNEApp ==========================> Constructor SUCCESSFULL !" << endl;
 }
 void CVNEApp::saveListItem(string sID, string sTitle)
@@ -54,9 +54,8 @@ CVNEApp::~CVNEApp()
 void CVNEApp::Onload()
 {
 	cout << "			CVNEApp::Onload ==========================> Onload 23232 !" << endl;
-	cout << "			CVNEApp::Onload ==========================> Onload 23232 !" << endl;
-	pCVNEPlaybackView->OnLoad();
-	pCVNEPlaybackView->ProcessKeyDown();
+	pCVNEMenuView->OnLoad();
+	pCVNEMenuView->ProcessKeyDown();
 	cout << "			CVNEApp::Onload ==========================> Onload SUCCESSFULL !" << endl;
 	
 }

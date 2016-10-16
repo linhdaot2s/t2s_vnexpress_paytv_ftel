@@ -17,6 +17,7 @@ CVNEMenuView::CVNEMenuView()
 	iPosMenuPage = 0;
 	iPosMenuLevel = 1;
 	bIsTurnOff = false;
+	bIsListView = true;
 	pCFBGlobal = CFBGlobal::FBSingletonGlobalInit();
 	this->OnInit();
 	cout << "			CVNEMenuView::CVNEMenuView ==========================> Constructor SUCCESSFULL !" << endl;
@@ -228,7 +229,10 @@ void CVNEMenuView::ProcessKeyDown()
 				case DIKS_CURSOR_RIGHT: {
 					cout << "			CVNEMenuView::ProcessKeyDown ---> key RIGHT !" << endl;
 					m_wMenuFocus->SetOpacity(m_wMenuFocus, 0);
-					CVNEApp::GetInstance()->pCVNEListView->ProcessKeyDown();
+					if (bIsListView)
+						bIsListView = CVNEApp::GetInstance()->pCVNEListView->ProcessKeyDown();
+					else
+						bIsListView = CVNEApp::GetInstance()->pCVNEDetailView->ProcessKeyDown();
 					m_wMenuFocus->SetOpacity(m_wMenuFocus, 255);
 					break;
 				}
@@ -278,7 +282,9 @@ void CVNEMenuView::ProcessKeyDown()
 				}
 				case DIKS_RETURN: {
 					cout << "			CVNEMenuView::ProcessKeyDown ---> key OK !" << endl;
+					CVNEApp::GetInstance()->m_pLoading->showLoading();
 					CVNEApp::GetInstance()->pCVNEListView->OnLoad(pListMenu[iPosMenu].category_id);
+					CVNEApp::GetInstance()->m_pLoading->hideLoading();
 					break;
 				}
 				}

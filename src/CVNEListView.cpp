@@ -15,6 +15,7 @@ CVNEListView::CVNEListView()
 	iPosInfoPage = 0;
 	iPosInfo = 0;
 	bIsBreak = false;
+	bIsListView = true;
 	pCFBGlobal = CFBGlobal::FBSingletonGlobalInit();
 	this->OnInit();
 	cout << "			CVNEListView::CVNEListView ==========================> Constructor SUCCESSFULL !" << endl;
@@ -252,7 +253,7 @@ void* CVNEListView::createPthreadShowItemsChangePage(void *vshowItemsChangePage)
 	pthread_exit(NULL);
 }
 
-void CVNEListView::ProcessKeyDown()
+bool CVNEListView::ProcessKeyDown()
 {
 	cout << "			CVNEListView::ProcessKeyDown ==========================> ProcessKeyDown !" << endl;
 	bIsBreak = false;
@@ -333,17 +334,37 @@ void CVNEListView::ProcessKeyDown()
 					break;
 				}
 				case DIKS_RETURN: {
-					cout << "			CVNEListView::ProcessKeyDown ---> key OK !" << endl;
+					cout << "			CVNEListView::ProcessKeyDown ---> key RETURN !" << endl;
 					bool bCheckData = CVNEApp::GetInstance()->pCVNEDetailView->OnLoad(pListItem[iPosInfo].article_id);
 					if (bCheckData) {
 						m_wMainView->SetOpacity(m_wMainView, 0);
 						m_wMainFocus->SetOpacity(m_wMainFocus, 0);
 						CVNEApp::GetInstance()->pCVNEDetailView->ProcessHTMLDetail();
 						CVNEApp::GetInstance()->pCVNEDetailView->DrawFocusText();
-						CVNEApp::GetInstance()->pCVNEDetailView->ProcessKeyDown();
-						m_wMainView->SetOpacity(m_wMainView, 255);
-						m_wMainFocus->SetOpacity(m_wMainFocus, 255);
+						bool bCheckShow = CVNEApp::GetInstance()->pCVNEDetailView->ProcessKeyDown();
+						if (bCheckShow) {
+							m_wMainView->SetOpacity(m_wMainView, 255);
+							m_wMainFocus->SetOpacity(m_wMainFocus, 255);
+						}
+						else {
+							bIsBreak = true;
+							return false;
+						}
 					}
+					break;
+				}
+				case DIKS_AUDIO: {
+					cout << "			CVNEListView::ProcessKeyDown ---> key AUDIO !" << endl;
+					CVNEApp::GetInstance()->saveListItem(pListItem[iPosInfo].article_id, pListItem[iPosInfo].title);
+					break;
+				}
+				case DIKS_INFO: {
+					CVNEApp::GetInstance()->pCVNEPlaybackView->OnLoad();
+					CVNEApp::GetInstance()->pCVNEPlaybackView->ProcessKeyDown();
+					break;
+				}
+				case DIKS_STOP: {
+					CVNEApp::GetInstance()->gst->close();
 					break;
 				}
 				}

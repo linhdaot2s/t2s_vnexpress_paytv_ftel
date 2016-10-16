@@ -20,7 +20,7 @@ public:
 	void ShowUpOrDownIcon(int iType);
 	static void* createPthreadShowItemsChangePage(void *vshowItemsChangePage);
 
-	void ProcessKeyDown();
+	bool ProcessKeyDown();
 
 	pthread_t pLoadPic;
 	IDirectFBFont		*pSize18;
@@ -38,6 +38,7 @@ public:
 	int					iPosInfo;
 	int					iPosInfoPage;
 	bool				bIsBreak;
+	bool				bIsListView;
 };
 
 #endif // !__CVNEListView_h__

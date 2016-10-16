@@ -13,7 +13,7 @@ public:
 	void OnInit();
 	void LoadStartup();
 	void DrawFocusText();
-	void ProcessKeyDown();
+	bool ProcessKeyDown();
 	void ProcessHTMLDetail();
 	bool OnLoad(string strArticleID);
 	void ShowUpOrDownIcon(int iType);
@@ -35,6 +35,7 @@ public:
 	int iWidthPageCurrent;
 	int iWidthPageTotal;
 	bool bIsBreak;
+	bool bListView;
 };
 
 #endif // !__CVNEDetailView_h__
