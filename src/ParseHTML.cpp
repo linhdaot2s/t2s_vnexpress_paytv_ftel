@@ -272,6 +272,16 @@ void ParseHTML::splitTagHTML(string &sText, int &iPosFirst)
 }
 int ParseHTML::parseTextHTML(string& SText,int iWidth,int iWidthImage, int iHeightImage)
 {
+	vtListText.clear();
+	m_iIndexText = 0;
+	m_bIsImg = false;
+	m_bIsBText = false;
+	m_bIsUText = false;
+	m_bIsIText = false;
+	m_bIsHeader = false;
+	m_bIsSub = false;
+	m_bIsSup = false;
+	m_iTagHeader = -1;
 	m_sTextHTML = "";
 	IDirectFBImageProvider* fb_iProvider = NULL;
 	DFBRectangle fb_rec;
@@ -737,16 +747,6 @@ IDirectFBSurface* ParseHTML::processTextHTML(string sText, DFBColor fb_clText, i
 	IDirectFBSurface *fb_sfDrawHTML = NULL;
 	DFBColor fb_clTxt = {0xff,0x00,0x00,0x05};
 	int iHeightString=0, iTempStringHeight=0, iSubTempHeight=0;
-	vtListText.clear();
-	m_iIndexText = 0;
-	m_bIsImg = false;
-	m_bIsBText = false;
-	m_bIsUText = false;
-	m_bIsIText = false;
-	m_bIsHeader = false;
-	m_bIsSub = false;
-	m_bIsSup = false;
-	m_iTagHeader = -1;
 	if(fb_clText.r == 0x00 && fb_clText.g==0x00 && fb_clText.b==0x00)
 		fb_clText = fb_clTxt;
 	bool bResult  = this->initAllFont(iSizeFont);

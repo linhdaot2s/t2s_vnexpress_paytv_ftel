@@ -82,11 +82,11 @@ class CVNExpressModel
 public:
 	CVNExpressModel();
 	~CVNExpressModel();
-
 	string IntToString(int iNumber);
 	ListMenu *getMenuVNExpress();
 	ListItem *getListVNExpress(string category_id, string limit, string offset);
 	DetailItem *getDetailVNExpress(string article_id);
+	string postGetLinkPlay(string data, string speed);
 
 };
 

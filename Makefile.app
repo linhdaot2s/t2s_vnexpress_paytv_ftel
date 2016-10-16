@@ -13,7 +13,7 @@ TARGET= VNExpress
 ##################################### Main #####################################
 SRCS  = VNExpress.cpp \
 		src/VNExpressModel.cpp \
-		$(LIBS_APP)/requestdata/requestdata.cpp \
+		$(CBOX_MAIN_DIR)/src/requestdata.cpp \
  		$(LIBS_APP)/jsoncpp-1.7.7/src/lib_json/json_reader.cpp \
         $(LIBS_APP)/jsoncpp-1.7.7/src/lib_json/json_value.cpp \
         $(LIBS_APP)/jsoncpp-1.7.7/src/lib_json/json_writer.cpp \
@@ -53,8 +53,7 @@ RMCFLAGS += \
 INCLUDES += \
 	-I$(CBOX_MAIN_DIR)/include \
 	-I$(CURL_LIBDIR)/include \
-	-I$(LIBS_APP)/jsoncpp-1.7.7/include \
-	-I$(LIBS_APP)/requestdata
+	-I$(LIBS_APP)/jsoncpp-1.7.7/include
 	
 INCLUDES += \
 	-I$(GSTREAMER_DIR) \

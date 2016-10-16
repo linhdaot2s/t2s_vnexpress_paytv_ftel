@@ -148,6 +148,26 @@ DetailItem *CVNExpressModel::getDetailVNExpress(string article_id)
 	}
 	return detailItems;
 }
+string CVNExpressModel::postGetLinkPlay(string data, string speed)
+{
+	Json::Value root;
+	Json::Reader reader;
+	DetailItem *detailItems = NULL;
+	string s = "speed:" + speed;
+	string sResult = "";
+	string response = CRequestData::postData("http://api.openfpt.vn/text2speech/v3?api_key=feedc4d1b6d94310a12e93efa794ca27",s,data);
+	bool bParsingSuccessful = reader.parse(response.c_str(), root);
+	bool checkJson = root.isObject();
+	if (!bParsingSuccessful || !checkJson)
+	{
+			return sResult;
+	}
+	else
+	{
+		sResult = root.get("async", "").asString();
+	}
+	return sResult;
+}
 
 
 
