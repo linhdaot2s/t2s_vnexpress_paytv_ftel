@@ -5,23 +5,24 @@ $(error Error: SMPAPI_DIR is not defined, please source build.env in the SAPI tr
 endif
 
 LIBS_APP = libs
-
 include $(SMPAPI_DIR)/smpapi.defs
 
 LIBRARY_SIGMA_DIR = $(CBOX_MAIN_DIR)/../sigma_extension
 TARGET= VNExpress
 ##################################### Main #####################################
-SRCS  = VNExpress.cpp \
-		src/VNExpressModel.cpp \
-		$(CBOX_MAIN_DIR)/src/requestdata.cpp \
+SRCS  =  VNExpress.cpp \
  		$(LIBS_APP)/jsoncpp-1.7.7/src/lib_json/json_reader.cpp \
-        $(LIBS_APP)/jsoncpp-1.7.7/src/lib_json/json_value.cpp \
-        $(LIBS_APP)/jsoncpp-1.7.7/src/lib_json/json_writer.cpp \
-		$(CBOX_MAIN_DIR)/src/CVNEMenuView.cpp  \
+        	$(LIBS_APP)/jsoncpp-1.7.7/src/lib_json/json_value.cpp \
+        	$(LIBS_APP)/jsoncpp-1.7.7/src/lib_json/json_writer.cpp \
+		$(CBOX_MAIN_DIR)/src/requestdata.cpp \
+		$(CBOX_MAIN_DIR)/src/Loading.cpp \
+		$(CBOX_MAIN_DIR)/src/ParseHTML.cpp \
+		$(CBOX_MAIN_DIR)/src/CVNEApp.cpp	\
 		$(CBOX_MAIN_DIR)/src/CVNEDetailView.cpp  \
+		$(CBOX_MAIN_DIR)/src/CVNEListView.cpp \
+		$(CBOX_MAIN_DIR)/src/CVNEMenuView.cpp  \
 		$(CBOX_MAIN_DIR)/src/CVNEPlaybackView.cpp  \
-		$(CBOX_MAIN_DIR)/src/CVNEApp.cpp
-
+		$(CBOX_MAIN_DIR)/src/VNExpressModel.cpp
 
 ###############################################################################
 CURL_LIBDIR = $(SMP86XX_ROOTFS_PATH)/cross_rootfs
@@ -53,7 +54,8 @@ RMCFLAGS += \
 INCLUDES += \
 	-I$(CBOX_MAIN_DIR)/include \
 	-I$(CURL_LIBDIR)/include \
-	-I$(LIBS_APP)/jsoncpp-1.7.7/include
+	-I$(LIBS_APP)/jsoncpp-1.7.7/include \
+	-I$(LIBS_APP)/requestdata
 	
 INCLUDES += \
 	-I$(GSTREAMER_DIR) \
