@@ -35,6 +35,7 @@ public:
 	void LoadStartup();
 	void showFocus(int iIndex, int iOldIndex);
 	void ShowPlayBar(bool bIsShow);
+	void exitPlayback();
 	void OnLoad();
 	void ProcessKeyDown();
 	void executePressEnter();

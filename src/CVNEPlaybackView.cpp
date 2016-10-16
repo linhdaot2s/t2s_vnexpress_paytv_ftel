@@ -11,7 +11,10 @@ CVNEPlaybackView::CVNEPlaybackView()
 	m_fText20 = NULL;
 	m_detailItem = NULL;
 	LinkPlay = "";
-	m_PthreadPlay = 0;
+	m_PthreadPlay = NULL;
+	m_pParseHTML = NULL;
+	m_sfMediaPlayerData = NULL;
+	m_wMediaPlayerData = NULL;
 	cout << "			CVNEPlaybackView::CVNEPlaybackView ==========================> Constructor SUCCESSFULL !" << endl;
 }
 
@@ -22,6 +25,11 @@ CVNEPlaybackView::~CVNEPlaybackView()
 	{
 		pGlobal->FBWindowDestroy(m_wMediaPlayer, m_sfMediaPlayer);
 		m_wMediaPlayer = NULL; m_sfMediaPlayer = NULL;
+	}
+	if(m_pParseHTML)
+	{
+		delete m_pParseHTML;
+		m_pParseHTML = NULL;
 	}
 }
 
@@ -46,12 +54,10 @@ void CVNEPlaybackView::OnLoad()
 }
 void CVNEPlaybackView::OnInit()
 {
-	cout << "			CVNEPlaybackView::OnInit ==========================> OnInit !" << endl;
 	if (m_wMediaPlayer == NULL && m_sfMediaPlayer == NULL)
 		pGlobal->FBWindowCreateWithAlphaChannel(&m_wMediaPlayer, NULL, &m_sfMediaPlayer, 995, 105, 285, 510, 0xff);
 	if (m_wMediaPlayerData == NULL && m_sfMediaPlayerData == NULL)
 		pGlobal->FBWindowCreateWithAlphaChannel(&m_wMediaPlayerData, NULL, &m_sfMediaPlayerData, 995, 105, 285, 510, 0xff);
-	cout << "			CVNEPlaybackView::OnInit ==========================> OnInit SUCCESSFULL !" << endl;
 }
 
 void CVNEPlaybackView::FlipAll()
@@ -87,7 +93,10 @@ void CVNEPlaybackView::stopPthreadAndPlay()
 	if(CVNEApp::GetInstance()->gst->getTimePosition() > 0)
 	{
 		CVNEApp::GetInstance()->gst->close();
+		pthread_cancel(m_PthreadPlay);
+		m_PthreadPlay = NULL;
 	}
+	m_PthreadPlay = NULL;
 }
 void CVNEPlaybackView::drawTextItems(const char *pText, int iSize, int iX, int iY, IDirectFBSurface* fb_sfText, IDirectFBFont* fb_fText, DFBColor fb_clText, int iRow)
 {
@@ -128,6 +137,10 @@ void CVNEPlaybackView::showFocus(int iIndex, int iOldIndex)
 	}
 	m_sfMediaPlayerData->Flip(m_sfMediaPlayerData, NULL, DSFLIP_WAITFORSYNC);
 }
+void CVNEPlaybackView::exitPlayback()
+{
+	bIsTurnOff = true;
+}
 void CVNEPlaybackView::ShowPlayBar(bool bIsShow)
 {
 	cout << "			CVNEPlaybackView::ShowPlayBar ===============1===========> ShowPlayBar !" << endl;
@@ -135,16 +148,23 @@ void CVNEPlaybackView::ShowPlayBar(bool bIsShow)
 		cout << "			CVNEPlaybackView::ShowPlayBar ---> Show playbar !" << endl;
 	}
 	else {
-		cout << "			CVNEPlaybackView::ShowPlayBar ---> Hide playbar !" << endl;
 		pGlobal->FBImageCreate(m_sfMediaPlayer, "images/playback/bg_t2s_03.png", 0, 0, 285, 510);
 		this->drawText(m_sfMediaPlayerData, "Danh sách đã lưu", m_fb_clText, m_fText20, 32, 130, DSTF_TOPLEFT);
-		int index = 0;
-		for (vector<ListSave>::iterator it=CVNEApp::GetInstance()->listSave.begin(); it!=CVNEApp::GetInstance()->listSave.end(); ++it)
+		if(CVNEApp::GetInstance()->listSave.size() > 0)
 		{
-			this->drawTextItems((*it).sTitleItem.c_str(), 230, 33, 165+(index*35), m_sfMediaPlayerData, m_fText18, m_fb_clText, 1);
-			index++;
+			int index = 0;
+			for (vector<ListSave>::iterator it=CVNEApp::GetInstance()->listSave.begin(); it!=CVNEApp::GetInstance()->listSave.end(); ++it)
+			{
+				fprintf(stderr,"<<<<<<<<<<<<<<<<< %d", __LINE__);
+				this->drawTextItems((*it).sTitleItem.c_str(), 230, 33, 165+(index*35), m_sfMediaPlayerData, m_fText18, m_fb_clText, 1);
+				index++;
+			}
+			this->showFocus(m_iFocus, m_iOldFocus);
 		}
-		this->showFocus(m_iFocus, m_iOldFocus);
+		else
+		{
+
+		}
 		m_sfMediaPlayer->Flip(m_sfMediaPlayer, NULL, DSFLIP_WAITFORSYNC);
 	}
 	cout << "			CVNEPlaybackView::ShowPlayBar ==========================> ShowPlayBar SUCCESSFULL !" << endl;
@@ -236,6 +256,7 @@ void CVNEPlaybackView::ProcessKeyDown()
 					break;
 				case DIKS_BACKSPACE:
 					cout << "			CVNEMenuView::BACK ---> key OK !" << endl;
+					this->exitPlayback();
 					break;
 				case DIKS_RETURN:
 					cout << "			CVNEMenuView::DIKS_RETURN ---> key OK !" << endl;
