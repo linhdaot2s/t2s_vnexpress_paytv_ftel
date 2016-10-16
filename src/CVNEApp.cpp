@@ -54,8 +54,9 @@ CVNEApp::~CVNEApp()
 void CVNEApp::Onload()
 {
 	cout << "			CVNEApp::Onload ==========================> Onload 23232 !" << endl;
-	pCVNEMenuView->OnLoad();
-	pCVNEMenuView->ProcessKeyDown();
+	cout << "			CVNEApp::Onload ==========================> Onload 23232 !" << endl;
+	pCVNEPlaybackView->OnLoad();
+	pCVNEPlaybackView->ProcessKeyDown();
 	cout << "			CVNEApp::Onload ==========================> Onload SUCCESSFULL !" << endl;
 	
 }

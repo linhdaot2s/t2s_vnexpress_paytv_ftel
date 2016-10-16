@@ -21,15 +21,24 @@ CVNEPlaybackView::CVNEPlaybackView()
 CVNEPlaybackView::~CVNEPlaybackView()
 {
 	cout << "			CVNEPlaybackView::~CVNEPlaybackView ==========================> Destructor !" << endl;
-	if (m_wMediaPlayer != NULL)
-	{
-		pGlobal->FBWindowDestroy(m_wMediaPlayer, m_sfMediaPlayer);
-		m_wMediaPlayer = NULL; m_sfMediaPlayer = NULL;
-	}
 	if(m_pParseHTML)
 	{
 		delete m_pParseHTML;
 		m_pParseHTML = NULL;
+	}
+	if (m_wMediaPlayer != NULL)
+	{
+			cout << "			CVNEListView::~CVNEListView ---> Destroy m_wMainView !" << endl;
+			pGlobal->FBWindowDestroy(m_wMediaPlayer, m_sfMediaPlayer);
+			m_wMediaPlayer = NULL; m_sfMediaPlayer = NULL;
+			cout << "			CVNEListView::~CVNEListView ---> Destroy m_wMainView  SUCCESSFULL !" << endl;
+	}
+	if (m_wMediaPlayerData != NULL)
+	{
+			cout << "			CVNEListView::~CVNEListView ---> Destroy m_wMainView !" << endl;
+			pGlobal->FBWindowDestroy(m_wMediaPlayerData, m_sfMediaPlayerData);
+			m_wMediaPlayerData = NULL; m_sfMediaPlayerData = NULL;
+			cout << "			CVNEListView::~CVNEListView ---> Destroy m_wMainView  SUCCESSFULL !" << endl;
 	}
 }
 
@@ -55,9 +64,13 @@ void CVNEPlaybackView::OnLoad()
 void CVNEPlaybackView::OnInit()
 {
 	if (m_wMediaPlayer == NULL && m_sfMediaPlayer == NULL)
-		pGlobal->FBWindowCreateWithAlphaChannel(&m_wMediaPlayer, NULL, &m_sfMediaPlayer, 995, 105, 285, 510, 0xff);
+		pGlobal->FBWindowCreateWithAlphaChannel(&m_wMediaPlayer, NULL, &m_sfMediaPlayer, 995, 105, 285, 510, 0x00);
 	if (m_wMediaPlayerData == NULL && m_sfMediaPlayerData == NULL)
-		pGlobal->FBWindowCreateWithAlphaChannel(&m_wMediaPlayerData, NULL, &m_sfMediaPlayerData, 995, 105, 285, 510, 0xff);
+		pGlobal->FBWindowCreateWithAlphaChannel(&m_wMediaPlayerData, NULL, &m_sfMediaPlayerData, 995, 105, 285, 510, 0x00);
+	m_wMediaPlayer->SetOpacity(m_wMediaPlayer, 0xff);
+	m_wMediaPlayer->RaiseToTop(m_wMediaPlayer);
+	m_wMediaPlayerData->SetOpacity(m_wMediaPlayerData, 0xff);
+	m_wMediaPlayerData->RaiseToTop(m_wMediaPlayerData);
 }
 
 void CVNEPlaybackView::FlipAll()
@@ -140,6 +153,11 @@ void CVNEPlaybackView::showFocus(int iIndex, int iOldIndex)
 void CVNEPlaybackView::exitPlayback()
 {
 	bIsTurnOff = true;
+	this->stopPthreadAndPlay();
+	m_wMediaPlayer->SetOpacity(m_wMediaPlayer, 0x00);
+	m_wMediaPlayer->LowerToBottom(m_wMediaPlayer);
+	m_wMediaPlayerData->SetOpacity(m_wMediaPlayerData, 0x00);
+	m_wMediaPlayerData->LowerToBottom(m_wMediaPlayerData);
 }
 void CVNEPlaybackView::ShowPlayBar(bool bIsShow)
 {
@@ -261,6 +279,10 @@ void CVNEPlaybackView::ProcessKeyDown()
 				case DIKS_RETURN:
 					cout << "			CVNEMenuView::DIKS_RETURN ---> key OK !" << endl;
 					this->executePressEnter();
+					break;
+				case DIKS_STOP:
+					if(CVNEApp::GetInstance()->gst->getTimePosition() > 0)
+						CVNEApp::GetInstance()->gst->close();
 					break;
 				}
 			}
