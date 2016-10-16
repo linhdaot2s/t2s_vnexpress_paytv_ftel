@@ -29,6 +29,9 @@ public:
 	IDirectFBWindow		*m_wMainView;
 	IDirectFBSurface	*m_sfMainView;
 
+//	IDirectFBWindow		*wSpeakIcon;
+//	IDirectFBSurface	*sfSpeakIcon;
+
 	IDirectFBSurface	*m_sfEditedText;
 	IDirectFBSurface	*m_sfSubEditedText;
 

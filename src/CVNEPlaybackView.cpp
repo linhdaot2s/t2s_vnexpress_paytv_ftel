@@ -45,8 +45,11 @@ CVNEPlaybackView::~CVNEPlaybackView()
 void CVNEPlaybackView::OnLoad()
 {
 	cout << "			CVNEPlaybackView::OnLoad =====";
-	pGlobal->FBFontCreate(&m_fText18, "Roboto-Regular.ttf", 18);
-	pGlobal->FBFontCreate(&m_fText20, "Roboto-Bold.ttf", 20);
+	if(m_fText18 == NULL && m_fText20 == NULL)
+	{
+		pGlobal->FBFontCreate(&m_fText18, "Roboto-Regular.ttf", 18);
+		pGlobal->FBFontCreate(&m_fText20, "Roboto-Bold.ttf", 20);
+	}
 	m_iFocus = 0;
 	m_iOldFocus = -1;
 	m_fb_clText.a = 0xff;
@@ -57,7 +60,11 @@ void CVNEPlaybackView::OnLoad()
 	m_fb_clTextFocus.r = 0x62;
 	m_fb_clTextFocus.g = 0x01;
 	m_fb_clTextFocus.b = 0x01;
-	m_pParseHTML = new ParseHTML();
+	if(m_pParseHTML == NULL)
+	{
+		m_pParseHTML = new ParseHTML();
+	}
+
 	this->OnInit();
 	this->LoadStartup();
 }
@@ -67,9 +74,15 @@ void CVNEPlaybackView::OnInit()
 		pGlobal->FBWindowCreateWithAlphaChannel(&m_wMediaPlayer, NULL, &m_sfMediaPlayer, 995, 105, 285, 510, 0x00);
 	if (m_wMediaPlayerData == NULL && m_sfMediaPlayerData == NULL)
 		pGlobal->FBWindowCreateWithAlphaChannel(&m_wMediaPlayerData, NULL, &m_sfMediaPlayerData, 995, 105, 285, 510, 0x00);
-	m_wMediaPlayer->SetOpacity(m_wMediaPlayer, 0xff);
+	u8 opa;
+	m_wMediaPlayer->GetOpacity(m_wMediaPlayer, &opa);
+	if(opa != 255)
+	{
+		m_wMediaPlayer->SetOpacity(m_wMediaPlayer, 0xff);
+		m_wMediaPlayerData->SetOpacity(m_wMediaPlayerData, 0xff);
+	}
+
 	m_wMediaPlayer->RaiseToTop(m_wMediaPlayer);
-	m_wMediaPlayerData->SetOpacity(m_wMediaPlayerData, 0xff);
 	m_wMediaPlayerData->RaiseToTop(m_wMediaPlayerData);
 }
 
@@ -106,10 +119,12 @@ void CVNEPlaybackView::stopPthreadAndPlay()
 	if(CVNEApp::GetInstance()->gst->getTimePosition() > 0)
 	{
 		CVNEApp::GetInstance()->gst->close();
+	}
+	if(m_PthreadPlay)
+	{
 		pthread_cancel(m_PthreadPlay);
 		m_PthreadPlay = NULL;
 	}
-	m_PthreadPlay = NULL;
 }
 void CVNEPlaybackView::drawTextItems(const char *pText, int iSize, int iX, int iY, IDirectFBSurface* fb_sfText, IDirectFBFont* fb_fText, DFBColor fb_clText, int iRow)
 {
@@ -153,11 +168,16 @@ void CVNEPlaybackView::showFocus(int iIndex, int iOldIndex)
 void CVNEPlaybackView::exitPlayback()
 {
 	bIsTurnOff = true;
-	this->stopPthreadAndPlay();
-	m_wMediaPlayer->SetOpacity(m_wMediaPlayer, 0x00);
+	u8 opa;
+	m_wMediaPlayer->GetOpacity(m_wMediaPlayer, &opa);
+	if(opa == 255)
+	{
+		m_wMediaPlayer->SetOpacity(m_wMediaPlayer, 0x00);
+		m_wMediaPlayerData->SetOpacity(m_wMediaPlayerData, 0x00);
+	}
 	m_wMediaPlayer->LowerToBottom(m_wMediaPlayer);
-	m_wMediaPlayerData->SetOpacity(m_wMediaPlayerData, 0x00);
 	m_wMediaPlayerData->LowerToBottom(m_wMediaPlayerData);
+	this->stopPthreadAndPlay();
 }
 void CVNEPlaybackView::ShowPlayBar(bool bIsShow)
 {
@@ -230,6 +250,7 @@ void CVNEPlaybackView::ProcessKeyDown()
 {
 	cout << "			CVNEMenuView::ProcessKeyDown ==========================> ProcessKeyDown !" << endl;
 	DFBInputEvent event;
+	bIsTurnOff = false;
 	while (!bIsTurnOff) {
 		while (CFBGlobal::events->GetEvent(CFBGlobal::events, DFB_EVENT(&event)) == DFB_OK) {
 			cout << "			CVNEMenuView::ProcessKeyDown =====";

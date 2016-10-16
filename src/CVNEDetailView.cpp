@@ -12,6 +12,9 @@ CVNEDetailView::CVNEDetailView()
 	m_wMainView = NULL;
 	m_sfMainView = NULL;
 
+//	wSpeakIcon = NULL;
+//	sfSpeakIcon = NULL;
+
 	pSize18 = NULL;
 	pSize20 = NULL;
 	pSize25 = NULL;
@@ -24,11 +27,17 @@ CVNEDetailView::CVNEDetailView()
 CVNEDetailView::~CVNEDetailView()
 {
 	if (m_wMainView != NULL) {
-		cout << "			CVNEDetailView::~CVNEDetailView ---> Destroy m_wMainView !" << endl;
+		//cout << "			CVNEDetailView::~CVNEDetailView ---> Destroy m_wMainView !" << endl;
 		pCFBGlobal->FBWindowDestroy(m_wMainView, m_sfMainView);
 		m_wMainView = NULL; m_sfMainView = NULL;
-		cout << "			CVNEDetailView::~CVNEDetailView ---> Destroy m_wMainView  SUCCESSFULL !" << endl;
+		//cout << "			CVNEDetailView::~CVNEDetailView ---> Destroy m_wMainView  SUCCESSFULL !" << endl;
 	}
+//	if (wSpeakIcon != NULL) {
+//			//cout << "			CVNEDetailView::~CVNEDetailView ---> Destroy wSpeakIcon !" << endl;
+//			pCFBGlobal->FBWindowDestroy(wSpeakIcon, sfSpeakIcon);
+//			wSpeakIcon = NULL; sfSpeakIcon = NULL;
+//			//cout << "			CVNEDetailView::~CVNEDetailView ---> Destroy wSpeakIcon  SUCCESSFULL !" << endl;
+//		}
 	if (pSize18 != NULL) {
 		pCFBGlobal->FBFontDestroy(pSize18);
 		pSize18 = NULL;
@@ -45,7 +54,7 @@ CVNEDetailView::~CVNEDetailView()
 
 bool CVNEDetailView::OnLoad(string strArticleID)
 {
-	printf("				CVNEDetailView::OnLoad ==============================================> OnLoad ! \n");
+	//printf("				CVNEDetailView::OnLoad ==============================================> OnLoad ! \n");
 	pDetailItem = CVNEApp::GetInstance()->pCVNExpressModel->getDetailVNExpress(strArticleID);
 	if (pDetailItem != NULL) {
 		iWidthPageCurrent = 62;
@@ -54,16 +63,20 @@ bool CVNEDetailView::OnLoad(string strArticleID)
 	}
 	else
 		return false;
-	printf("				CVNEDetailView::OnLoad ==============================================> OnLoad SUCCESSFULL !\n");
+	//printf("				CVNEDetailView::OnLoad ==============================================> OnLoad SUCCESSFULL !\n");
 }
 
 void CVNEDetailView::OnInit()
 {
-	printf("				CVNEDetailView::OnInit ==============================================> OnInit ! \n");
+	//printf("				CVNEDetailView::OnInit ==============================================> OnInit ! \n");
 	if (m_wMainView == NULL && m_sfMainView == NULL) {
-		printf("				CVNEDetailView::OnInit ---> Create WINDOW ! \n");
+		//printf("				CVNEDetailView::OnInit ---> Create WINDOW ! \n");
 		pCFBGlobal->FBWindowCreateWithAlphaChannel(&m_wMainView, NULL, &m_sfMainView, list_x, list_y, list_width - 30, list_height, 0xff);
 	}
+//	if (m_wMainView == NULL && m_sfMainView == NULL) {
+//			pCFBGlobal->FBWindowCreateWithAlphaChannel(&wSpeakIcon, NULL, &sfSpeakIcon, 1200, 90, 50, 53, 0xff);
+//			pCFBGlobal->FBImageCreate(sfSpeakIcon, "images/playback/speak_show.png", 0, 0);
+//	}
 		if (pSize18 == NULL)
 		pCFBGlobal->FBFontCreate(&pSize18, "Roboto-Regular.ttf", 18);
 	if (pSize20 == NULL)
@@ -72,7 +85,7 @@ void CVNEDetailView::OnInit()
 		pCFBGlobal->FBFontCreate(&pSize25, "Roboto-Bold.ttf", 25);
 	if (pParseHTML == NULL)
 		pParseHTML = new ParseHTML();
-	printf("				CVNEDetailView::OnInit ==============================================> OnInit SUCCESSFULL ! \n");
+	//printf("				CVNEDetailView::OnInit ==============================================> OnInit SUCCESSFULL ! \n");
 }
 
 void CVNEDetailView::LoadStartup()
@@ -81,10 +94,10 @@ void CVNEDetailView::LoadStartup()
 
 void CVNEDetailView::DrawFocusText()
 {
-	printf("				CVNEDetailView::DrawFocusText ==============================================> Draw focus text \n");
+	//printf("				CVNEDetailView::DrawFocusText ==============================================> Draw focus text \n");
 	m_sfMainView->Clear(m_sfMainView, 0x00, 0x00, 0x00, 0x00);
 	if (iWidthPageTotal > 517) {
-		printf("				CVNEDetailView::DrawFocusText ---> Multi text !\n");
+		//printf("				CVNEDetailView::DrawFocusText ---> Multi text !\n");
 		m_sfMainView->SetFont(m_sfMainView, pSize20);
 		DFBRectangle rect = { 0, (iWidthPageCurrent - 62), 999, 510 };
 		m_sfMainView->SetBlittingFlags(m_sfMainView, DSBLIT_DST_PREMULTIPLY);
@@ -113,10 +126,10 @@ void CVNEDetailView::DrawFocusText()
 		string strpage = page.str();
 		pCFBGlobal->DrawText(m_sfMainView, pSize20, strpage.c_str(), VNE_BLACK, (DFBPoint) { 1000, 580 }, DSTF_TOPRIGHT);
 		m_sfMainView->Flip(m_sfMainView, NULL, DSFLIP_WAITFORSYNC);
-		printf("				CVNEDetailView::DrawFocusText ---> Multi text SUCCESSFULL !\n");
+		//printf("				CVNEDetailView::DrawFocusText ---> Multi text SUCCESSFULL !\n");
 	}
 	else {
-		printf("				CVNEDetailView::DrawFocusText ---> Only one page !\n");
+		//printf("				CVNEDetailView::DrawFocusText ---> Only one page !\n");
 		m_sfMainView->SetFont(m_sfMainView, pSize20);
 		pCFBGlobal->DrawText(m_sfMainView, pSize20, "Trang 1/1", VNE_BLACK, (DFBPoint) { 1000, 580 }, DSTF_TOPRIGHT);
 
@@ -125,12 +138,12 @@ void CVNEDetailView::DrawFocusText()
 		m_sfMainView->Blit(m_sfMainView, m_sfEditedText, &rect, 5, 62);
 		m_sfMainView->Flip(m_sfMainView, NULL, DSFLIP_WAITFORSYNC);
 	}
-	printf("				CVNEDetailView::DrawFocusText ==============================================> Draw focus text SUCCESSFULL !\n");
+	//printf("				CVNEDetailView::DrawFocusText ==============================================> Draw focus text SUCCESSFULL !\n");
 }
 
 bool CVNEDetailView::ProcessKeyDown()
 {
-	cout << "			CVNEDetailView::ProcessKeyDown ==========================> ProcessKeyDown !" << endl;
+	//cout << "			CVNEDetailView::ProcessKeyDown ==========================> ProcessKeyDown !" << endl;
 	bIsBreak = false;
 	m_wMainView->SetOpacity(m_wMainView, 255);
 	while (!bIsBreak) {
@@ -139,18 +152,18 @@ bool CVNEDetailView::ProcessKeyDown()
 			if (event.type == DIET_KEYPRESS) {
 				switch (event.key_symbol) {
 				case DIKS_CURSOR_LEFT: {
-					cout << "			CVNEDetailView::ProcessKeyDown ---> key LEFT !" << endl;
+					//cout << "			CVNEDetailView::ProcessKeyDown ---> key LEFT !" << endl;
 					return false;
 					break;
 				}
 				case DIKS_CURSOR_RIGHT: {
-					cout << "			CVNEDetailView::ProcessKeyDown ---> key RIGHT !" << endl;
+					//cout << "			CVNEDetailView::ProcessKeyDown ---> key RIGHT !" << endl;
 					CVNEApp::GetInstance()->pCVNEPlaybackView->OnLoad();
 					CVNEApp::GetInstance()->pCVNEPlaybackView->ProcessKeyDown();
 					break;
 				}
 				case DIKS_CURSOR_UP: {
-					cout << "			CVNEDetailView::ProcessKeyDown ---> key UP !" << endl;
+					//cout << "			CVNEDetailView::ProcessKeyDown ---> key UP !" << endl;
 					iWidthPageCurrent -= 27;
 					if (iWidthPageCurrent <= 62)
 						iWidthPageCurrent = 62;
@@ -160,7 +173,7 @@ bool CVNEDetailView::ProcessKeyDown()
 					break;
 				}
 				case DIKS_CURSOR_DOWN: {
-					cout << "			CVNEDetailView::ProcessKeyDown ---> key DOWN !" << endl;
+					//cout << "			CVNEDetailView::ProcessKeyDown ---> key DOWN !" << endl;
 					iWidthPageCurrent += 27;
 					if (iWidthPageCurrent >= (iWidthPageTotal - (iWidthPageTotal % 510)))
 						iWidthPageCurrent = (iWidthPageTotal - (iWidthPageTotal % 510));
@@ -170,16 +183,16 @@ bool CVNEDetailView::ProcessKeyDown()
 					break;
 				}
 				case DIKS_BACKSPACE: {
-					cout << "			CVNEDetailView::ProcessKeyDown ---> key OK !" << endl;
+					//cout << "			CVNEDetailView::ProcessKeyDown ---> key OK !" << endl;
 					if (m_sfEditedText != NULL) {
 						pCFBGlobal->FBSurfaceDestroy(m_sfEditedText);
 						m_sfEditedText = NULL;
-						printf("				CVNEDetailView::ProcessHTMLDetail ---> Destroy m_sfEditedText SUCCESSFULL !\n");
+						//printf("				CVNEDetailView::ProcessHTMLDetail ---> Destroy m_sfEditedText SUCCESSFULL !\n");
 					}
 					if (m_sfSubEditedText != NULL) {
 						pCFBGlobal->FBSurfaceDestroy(m_sfSubEditedText);
 						m_sfSubEditedText = NULL;
-						printf("				CVNEDetailView::ProcessHTMLDetail ---> Destroy m_sfSubEditedText SUCCESSFULL !\n");
+						//printf("				CVNEDetailView::ProcessHTMLDetail ---> Destroy m_sfSubEditedText SUCCESSFULL !\n");
 					}
 					m_wMainView->SetOpacity(m_wMainView, 0);
 					bIsBreak = true;
@@ -187,6 +200,7 @@ bool CVNEDetailView::ProcessKeyDown()
 					break;
 				}
 				case DIKS_AUDIO: {
+					//wSpeakIcon->SetOpacity(wSpeakIcon, 255);
 					bool bCheckState = CVNEApp::GetInstance()->gst->checkState(1);
 					if (bCheckState)
 						CVNEApp::GetInstance()->gst->close();
@@ -196,41 +210,47 @@ bool CVNEDetailView::ProcessKeyDown()
 					break;
 				}
 				case DIKS_STOP: {
+					//wSpeakIcon->SetOpacity(wSpeakIcon, 0);
 					CVNEApp::GetInstance()->gst->close();
+					break;
+				}
+				case DIKS_INFO: {
+					CVNEApp::GetInstance()->gst->close();
+					CVNEApp::GetInstance()->pCVNEPlaybackView->OnLoad();
+					CVNEApp::GetInstance()->pCVNEPlaybackView->ProcessKeyDown();
 					break;
 				}
 				}
 			}
 		}
 	}
-	cout << "			CVNEListView::ProcessKeyDown ==========================> ProcessKeyDown SUCCESSFULL !" << endl;
+	//cout << "			CVNEListView::ProcessKeyDown ==========================> ProcessKeyDown SUCCESSFULL !" << endl;
 }
 
 void CVNEDetailView::ProcessHTMLDetail()
 {
-	printf("				CVNEDetailView::ProcessHTMLDetail ==============================================> Process detail text !\n");
+	//printf("				CVNEDetailView::ProcessHTMLDetail ==============================================> Process detail text !\n");
 	string TotalContent;
 	TotalContent = "<h1>" + pDetailItem->title + "</h1> </p> <br> <i>" + pDetailItem->lead + "</i> </p>" + pDetailItem->content + "<br>";
-	cout << endl<<pDetailItem->content << endl;
+	//cout << endl<<pDetailItem->content << endl;
 	if (m_sfEditedText != NULL) {
 		pCFBGlobal->FBSurfaceDestroy(m_sfEditedText);
 		m_sfEditedText = NULL;
-		printf("				CVNEDetailView::ProcessHTMLDetail ---> Destroy m_sfEditedText SUCCESSFULL !\n");
+		//printf("				CVNEDetailView::ProcessHTMLDetail ---> Destroy m_sfEditedText SUCCESSFULL !\n");
 	}
 	if (m_sfSubEditedText != NULL) {
 		pCFBGlobal->FBSurfaceDestroy(m_sfSubEditedText);
 		m_sfSubEditedText = NULL;
-		printf("				CVNEDetailView::ProcessHTMLDetail ---> Destroy m_sfSubEditedText SUCCESSFULL !\n");
+		//printf("				CVNEDetailView::ProcessHTMLDetail ---> Destroy m_sfSubEditedText SUCCESSFULL !\n");
 	}
 	m_sfEditedText = pParseHTML->processTextHTML(TotalContent, (DFBColor) { 0xff, 0x00, 0x00, 0x6 }, 20, 999, 490, 294);
-	cout << endl << "TotalContent  : " << TotalContent << endl << endl;
 	m_sfEditedText->GetSize(m_sfEditedText, NULL, &iWidthPageTotal);
-	printf("				CVNEDetailView::ProcessHTMLDetail ==============================================> Process detail text SUCCESSFULL !\n");
+	//printf("				CVNEDetailView::ProcessHTMLDetail ==============================================> Process detail text SUCCESSFULL !\n");
 }
 
 void CVNEDetailView::ShowUpOrDownIcon(int iType)
 {
-	cout << "			CVNEDetailView::ShowUpOrDownIcon ==========================> ShowUpOrDownIcon !" << endl;
+	//cout << "			CVNEDetailView::ShowUpOrDownIcon ==========================> ShowUpOrDownIcon !" << endl;
 	switch (iType) {
 	case 1: {
 		pCFBGlobal->FBImageCreate(m_sfMainView, Icon_up, detail_up_icon_x, detail_up_icon_y);
@@ -246,5 +266,5 @@ void CVNEDetailView::ShowUpOrDownIcon(int iType)
 		break;
 	}
 	}
-	cout << "			CVNEDetailView::ShowUpOrDownIcon ==========================> ShowUpOrDownIcon SUCCESSFULL !" << endl;
+	//cout << "			CVNEDetailView::ShowUpOrDownIcon ==========================> ShowUpOrDownIcon SUCCESSFULL !" << endl;
 }

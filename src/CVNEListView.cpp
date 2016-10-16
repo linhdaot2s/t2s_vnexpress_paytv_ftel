@@ -359,6 +359,7 @@ bool CVNEListView::ProcessKeyDown()
 					break;
 				}
 				case DIKS_INFO: {
+					CVNEApp::GetInstance()->gst->close();
 					CVNEApp::GetInstance()->pCVNEPlaybackView->OnLoad();
 					CVNEApp::GetInstance()->pCVNEPlaybackView->ProcessKeyDown();
 					break;
