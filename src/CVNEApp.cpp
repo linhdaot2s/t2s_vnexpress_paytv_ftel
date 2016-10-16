@@ -23,6 +23,7 @@ CVNEApp::CVNEApp()
 
 	pCVNExpressModel	= new CVNExpressModel();
 	pCVNEMenuView		= new CVNEMenuView();
+	pCVNEListView		= new CVNEListView();
 	pCVNEDetailView		= new CVNEDetailView();
 	pCVNEPlaybackView	= new CVNEPlaybackView();
 	

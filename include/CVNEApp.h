@@ -9,6 +9,7 @@
 #include "FBGlobal.h"
 #include "VNExpressModel.h"
 #include "CVNEMenuView.h"
+#include "CVNEListView.h"
 #include "CVNEDetailView.h"
 #include "CVNEPlaybackView.h"
 #include "directfb.h"
@@ -16,8 +17,9 @@
 
 class CFBGlobal;
 class CVNEMenuView;
-class CVNEDetailView;
+class CVNEListView;
 class CVNExpressModel;
+class CVNEDetailView;
 class CVNEPlaybackView;
 
 using namespace std;
@@ -31,6 +33,7 @@ public:
 	void Onload();
 	static CVNEApp   *GetInstance();
 	CVNEMenuView	 *pCVNEMenuView;
+	CVNEListView	 *pCVNEListView;
 	CVNExpressModel	 *pCVNExpressModel;
 	CVNEDetailView	 *pCVNEDetailView;
 	CVNEPlaybackView *pCVNEPlaybackView;

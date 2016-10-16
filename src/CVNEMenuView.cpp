@@ -147,7 +147,7 @@ void CVNEMenuView::OnLoad()
 		this->LoadStartup();
 		this->LoadPageItemMenuLv1();
 		this->FlipAll();
-		CVNEApp::GetInstance()->pCVNEDetailView->OnLoad(pListMenu->category_id);
+		CVNEApp::GetInstance()->pCVNEListView->OnLoad(pListMenu->category_id);
 		
 	}
 	cout << "			CVNEMenuView::OnLoad ==========================> OnLoad SUCCESSFULL !" << endl;
@@ -228,7 +228,7 @@ void CVNEMenuView::ProcessKeyDown()
 				case DIKS_CURSOR_RIGHT: {
 					cout << "			CVNEMenuView::ProcessKeyDown ---> key RIGHT !" << endl;
 					m_wMenuFocus->SetOpacity(m_wMenuFocus, 0);
-					CVNEApp::GetInstance()->pCVNEDetailView->ProcessKeyDown();
+					CVNEApp::GetInstance()->pCVNEListView->ProcessKeyDown();
 					m_wMenuFocus->SetOpacity(m_wMenuFocus, 255);
 					break;
 				}
@@ -278,7 +278,7 @@ void CVNEMenuView::ProcessKeyDown()
 				}
 				case DIKS_RETURN: {
 					cout << "			CVNEMenuView::ProcessKeyDown ---> key OK !" << endl;
-					CVNEApp::GetInstance()->pCVNEDetailView->OnLoad(pListMenu[iPosMenu].category_id);
+					CVNEApp::GetInstance()->pCVNEListView->OnLoad(pListMenu[iPosMenu].category_id);
 					break;
 				}
 				}
